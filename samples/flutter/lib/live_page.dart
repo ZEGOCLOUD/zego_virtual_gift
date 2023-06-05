@@ -40,19 +40,12 @@ class LivePageState extends State<LivePage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      subscriptions
-        ..add(ZegoUIKit()
-            .getSignalingPlugin()
-            .getInRoomTextMessageReceivedEventStream()
-            .listen((event) {
-          onInRoomTextMessageReceived(event);
-        }))
-        ..add(ZegoUIKit()
-            .getSignalingPlugin()
-            .getInRoomCommandMessageReceivedEventStream()
-            .listen((event) {
-          onInRoomCommandMessageReceived(event);
-        }));
+      subscriptions.add(ZegoUIKit()
+          .getSignalingPlugin()
+          .getInRoomCommandMessageReceivedEventStream()
+          .listen((event) {
+        onInRoomCommandMessageReceived(event);
+      }));
     });
   }
 
@@ -99,20 +92,6 @@ class LivePageState extends State<LivePage> {
         config: (widget.isHost ? hostConfig : audienceConfig),
       ),
     );
-  }
-
-  // if you use reliable message channel, you need subscription this method.
-  void onInRoomTextMessageReceived(
-      ZegoSignalingPluginInRoomTextMessageReceivedEvent event) {
-    final messages = event.messages;
-
-    // You can display different animations according to gift-type
-    for (final message in messages) {
-      debugPrint("onInRoomTextMessageReceived: ${message.text}");
-      if (message.senderUserID != localUserID) {
-        GiftWidget.show(context, "assets/sports-car.svga");
-      }
-    }
   }
 
   // if you use unreliable message channel, you need subscription this method.
