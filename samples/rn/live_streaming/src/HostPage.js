@@ -1,22 +1,75 @@
-import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View, findNodeHandle } from 'react-native';
 import ZegoUIKitPrebuiltLiveStreaming, {
     HOST_DEFAULT_CONFIG,
     ZegoMenuBarButtonName,
 } from '@zegocloud/zego-uikit-prebuilt-live-streaming-rn'
 import * as ZIM from 'zego-zim-react-native';
 import KeyCenter from "../KeyCenter";
-import { GiftHelper } from './GiftHelper';
+import ZegoUIKit from '@zegocloud/zego-uikit-rn';
+import ZegoExpressEngine, { ZegoAlphaLayoutType, ZegoMediaPlayerResource, ZegoMediaPlayerState, ZegoMultimediaLoadType, ZegoTextureView } from 'zego-express-engine-reactnative';
+import { FileHelper } from './FileHelper';
 
 export default function HostPage(props) {
     const prebuiltRef = useRef();
     const { route } = props;
     const { params } = route;
     const { userID, userName, liveID } = params;
+    const mediaViewRef = useRef();
+    const [showGift, setShowGift] = useState(false);
 
     useEffect(() => {
-      GiftHelper.onGiftReceived();
+      
+      const callbackID = 'callbackID'
+      ZegoUIKit.getSignalingPlugin().onInRoomCommandMessageReceived(callbackID, (messageData) => {
+        const {roomID, message, senderUserID, timestamp} = messageData;
+          console.log(`onInRoomCommandMessageReceived, roomID:${roomID}, message:${message}, senderUserID:${senderUserID}, timestamp:${timestamp}`);
+          showGiftAnimation();
+      });
+
+      return () => {
+        if (this.mediaPlayer) {
+          ZegoExpressEngine.instance().destroyMediaPlayer(this.mediaPlayer);
+          this.mediaPlayer = null;
+        }
+        ZegoUIKit.getSignalingPlugin().onInRoomCommandMessageReceived(callbackID);
+      }
     }, []);
+
+    const showGiftAnimation = async () => {
+      setShowGift(true);
+      if (!this.mediaPlayer) {
+        this.mediaPlayer = await ZegoExpressEngine.instance().createMediaPlayer();
+  
+        this.mediaPlayer.on('mediaPlayerStateUpdate', (player, state, errorCode) => {
+          if (state === ZegoMediaPlayerState.PlayEnded) {
+            console.log('Play Ended');
+            setShowGift(false);
+          }
+        });
+      }
+      // this.mediaPlayer.enableRepeat = true;
+      this.mediaPlayer.setPlayerView({ 'reactTag': findNodeHandle(mediaViewRef.current), 'viewMode': 0, 'backgroundColor': 0, 'alphaBlend': true});
+  
+      let resource = new ZegoMediaPlayerResource();
+      resource.loadType = ZegoMultimediaLoadType.FilePath;
+      resource.alphaLayout = ZegoAlphaLayoutType.Left;
+  
+      // 1. For local resource.
+      // resource.filePath = FileHelper.getResourceFolder() + '1.mp4';
+  
+      // 2. For online resource.
+      resource.filePath = 'https://storage.zego.im/sdk-doc/Pics/zegocloud/oss/1.mp4';
+  
+      console.log(`File Path: ${resource.filePath}`);
+      
+      this.mediaPlayer.loadResourceWithConfig(resource).then((ret) => {
+        console.log("load resource error: " + ret.errorCode)
+        if (ret.errorCode === 0) {
+          this.mediaPlayer.start();
+        }
+      });
+    };
 
     return (
         <View style={styles.container}>
@@ -65,6 +118,16 @@ export default function HostPage(props) {
                 }}
                 plugins={[ZIM]}
             />
+            {showGift ? 
+            <View style={{height: 350, width: 350, backgroundColor: 0}}>
+              <ZegoTextureView
+              // @ts-ignore
+              style={{ flex: 1, width: '100%', height: '100%', position: 'absolute' }}
+              ref={mediaViewRef}
+              collapsable={false}
+              />
+            </View> : null
+            }
         </View>
     );
 }

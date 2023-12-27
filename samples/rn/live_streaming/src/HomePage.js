@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, View, StyleSheet, Text, TextInput } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { FileHelper } from "./FileHelper";
 
 export default function HomePage(props) {
     const navigation = useNavigation();
@@ -17,6 +18,7 @@ export default function HomePage(props) {
     useEffect(() => {
         setUserID(String(Math.floor(Math.random() * 100000)));
         setLiveID(String(Math.floor(Math.random() * 10000)));
+        FileHelper.copyAssets();
     }, [])
     const insets = useSafeAreaInsets();
     return (
