@@ -1,43 +1,28 @@
-import 'dart:io';
-import 'dart:async';
+part of '../manager.dart';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:live_streaming_cohost/gift/player.dart';
-import 'package:transparent_image/transparent_image.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:http/http.dart' as http;
+mixin Cache {
+  final _cacheImpl = CacheImpl();
 
-import 'grid.dart';
+  CacheImpl get cache => _cacheImpl;
+}
 
-class ZegoGiftCache {
-  static final ZegoGiftCache _singleton = ZegoGiftCache._internal();
-
-  factory ZegoGiftCache() {
-    return _singleton;
-  }
-
-  ZegoGiftCache._internal();
-
-  void cache(List<ZegoGiftSheetListItemData> cacheList) {
-    cacheList.forEach((itemData) {
-      debugPrint('${DateTime.now()} try cache ${itemData.url}');
+class CacheImpl {
+  void cache(List<ZegoGiftItem> cacheList) {
+    for (var itemData in cacheList) {
+      debugPrint('${DateTime.now()} try cache ${itemData.sourceURL}');
       switch (itemData.source) {
-        case GiftPlayerSource.url:
-          readFromURL(url: itemData.url).then((value) {
-            debugPrint('${DateTime.now()} cache done: ${itemData.url} ');
+        case ZegoGiftSource.url:
+          readFromURL(url: itemData.sourceURL).then((value) {
+            debugPrint('${DateTime.now()} cache done: ${itemData.sourceURL} ');
           });
           break;
-        case GiftPlayerSource.asset:
-          readFromAsset(assetPath: itemData.url).then((value) {
-            debugPrint('${DateTime.now()} cache done: ${itemData.url} ');
+        case ZegoGiftSource.asset:
+          readFromAsset(assetPath: itemData.sourceURL).then((value) {
+            debugPrint('${DateTime.now()} cache done: ${itemData.sourceURL} ');
           });
-          break;
-        case GiftPlayerSource.bytes:
-          debugPrint('${DateTime.now()} cache done: ${itemData.url} ');
           break;
       }
-    });
+    }
   }
 
   Future<List<int>> readFromURL({required String url}) async {
@@ -65,14 +50,14 @@ class ZegoGiftCache {
     return Future<List<int>>.value(result);
   }
 
-  Future<List<int>> readFromAsset({required String assetPath}) async {
+  Future<List<int>> readFromAsset(String assetPath) async {
     List<int> result = kTransparentImage.toList();
     final FileInfo? info = await DefaultCacheManager().getFileFromCache(
       assetPath,
       // ignoreMemCache: true,
     );
     if (info == null) {
-      await _loadAssetData(assetPath).then((bytesData) async {
+      await loadAssetData(assetPath).then((bytesData) async {
         result = bytesData;
         await DefaultCacheManager().putFile(assetPath, bytesData);
       });
@@ -83,7 +68,7 @@ class ZegoGiftCache {
     return Future<List<int>>.value(result);
   }
 
-  Future<Uint8List> _loadAssetData(String assetPath) async {
+  Future<Uint8List> loadAssetData(String assetPath) async {
     ByteData assetData = await rootBundle.load(assetPath);
     Uint8List data = assetData.buffer.asUint8List();
     return data;

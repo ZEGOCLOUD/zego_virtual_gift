@@ -1,22 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:live_streaming_cohost/gift/player.dart';
-import 'package:live_streaming_cohost/gift/service.dart';
 
 import 'data.dart';
-
-class ZegoGiftSheetListItemData {
-  String name;
-  String icon;
-  String url;
-  GiftPlayerSource source;
-
-  ZegoGiftSheetListItemData({
-    required this.name,
-    required this.icon,
-    required this.url,
-    this.source = GiftPlayerSource.url,
-  });
-}
+import 'defines.dart';
+import 'manager.dart';
 
 void showSoundEffectSheet(
   BuildContext context,
@@ -57,7 +43,7 @@ class ZegoGiftSheet extends StatefulWidget {
     required this.itemDataList,
   }) : super(key: key);
 
-  final List<ZegoGiftSheetListItemData> itemDataList;
+  final List<ZegoGiftItem> itemDataList;
 
   @override
   State<ZegoGiftSheet> createState() => _ZegoGiftSheetState();
@@ -123,16 +109,13 @@ class _ZegoGiftSheetState extends State<ZegoGiftSheet> {
     );
   }
 
-  void onGiftTap(ZegoGiftSheetListItemData item) {
+  void onGiftTap(ZegoGiftItem item) {
     Navigator.of(context).pop();
 
-    ZegoGiftPlayer().add(
-      GiftPlayerData(
-        item.source,
-        item.url,
-      ),
-    );
+    /// local play
+    ZegoGiftManager().playList.add(item);
 
-    ZegoGiftService().sendGift(name: item.name, count: 1);
+    /// notify remote host
+    ZegoGiftManager().service.sendGift(name: item.name, count: 1);
   }
 }

@@ -1,24 +1,18 @@
-// Dart imports:
-
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:live_streaming_cohost/gift/player.dart';
-import 'package:live_streaming_cohost/gift/service.dart';
-import 'package:live_streaming_cohost/home_page.dart';
 
 // Package imports:
 import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
-import 'gift/cache.dart';
 import 'gift/data.dart';
+import 'gift/manager.dart';
+import 'home_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   final navigatorKey = GlobalKey<NavigatorState>();
 
-  ZegoGiftCache().cache(giftItemList);
+  ZegoGiftManager().cache.cache(giftItemList);
 
   ZegoUIKit().initLog().then((value) {
     runApp(MyApp(

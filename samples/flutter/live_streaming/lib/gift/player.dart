@@ -1,63 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:live_streaming_cohost/gift/manager.dart';
 
-enum GiftPlayerSource {
-  url,
-  asset,
-  bytes,
-}
+import 'components/play_widget.dart';
+import 'defines.dart';
 
-class GiftPlayerData {
-  GiftPlayerSource source = GiftPlayerSource.asset;
-  dynamic value = '';
-
-  GiftPlayerData(
-    this.source,
-    this.value,
-  );
+class ZegoGiftPlayer extends StatefulWidget {
+  const ZegoGiftPlayer({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  String toString() {
-    return 'GiftPlayerData:{'
-        'source:$source, '
-        'value:$value, '
-        '}';
-  }
+  State<ZegoGiftPlayer> createState() => ZegoGiftPlayerState();
 }
 
-class ZegoGiftPlayer {
-  static final ZegoGiftPlayer _singleton = ZegoGiftPlayer._internal();
+class ZegoGiftPlayerState extends State<ZegoGiftPlayer> {
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<ZegoGiftItem?>(
+      valueListenable: ZegoGiftManager().playList.playingDataNotifier,
+      builder: (context, giftData, _) {
+        if (null == giftData) {
+          return const SizedBox.shrink();
+        }
 
-  factory ZegoGiftPlayer() {
-    return _singleton;
-  }
-
-  ZegoGiftPlayer._internal();
-
-  final playingDataNotifier = ValueNotifier<GiftPlayerData?>(null);
-  List<GiftPlayerData> pendingPlaylist = [];
-
-  void next() {
-    if (pendingPlaylist.isEmpty) {
-      playingDataNotifier.value = null;
-    } else {
-      playingDataNotifier.value = pendingPlaylist.removeAt(0);
-    }
-  }
-
-  void add(
-    GiftPlayerData data,
-  ) {
-    if (playingDataNotifier.value != null) {
-      pendingPlaylist.add(data);
-      return;
-    }
-    playingDataNotifier.value = data;
-  }
-
-  bool clear() {
-    playingDataNotifier.value = null;
-    pendingPlaylist.clear();
-
-    return true;
+        return ZegoGiftPlayerWidget(
+          key: UniqueKey(),
+          giftData: giftData,
+          onPlayEnd: () {
+            ZegoGiftManager().playList.next();
+          },
+        );
+      },
+    );
   }
 }

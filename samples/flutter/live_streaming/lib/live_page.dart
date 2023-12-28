@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:live_streaming_cohost/gift/manager.dart';
 
 import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
@@ -7,8 +8,6 @@ import 'constants.dart';
 
 import 'gift/grid.dart';
 import 'gift/player.dart';
-import 'gift/player_overlay.dart';
-import 'gift/service.dart';
 
 class LivePage extends StatefulWidget {
   final String liveID;
@@ -29,23 +28,21 @@ class LivePage extends StatefulWidget {
 class LivePageState extends State<LivePage> {
   ZegoUIKitPrebuiltLiveStreamingController? liveController;
 
-  ZegoGiftService get giftService => ZegoGiftService();
-
   @override
   void initState() {
     super.initState();
 
-    giftService.recvNotifier.addListener(onGiftReceived);
+    ZegoGiftManager().service.recvNotifier.addListener(onGiftReceived);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       //  todo
-      giftService.init(
-        appID: yourAppID,
-        appSecret: yourServerSecret,
-        liveID: widget.liveID,
-        localUserID: widget.localUserID,
-        localUserName: 'user_${widget.localUserID}',
-      );
+      ZegoGiftManager().service.init(
+            appID: yourAppID,
+            appSecret: yourServerSecret,
+            liveID: widget.liveID,
+            localUserID: widget.localUserID,
+            localUserName: 'user_${widget.localUserID}',
+          );
     });
   }
 
@@ -53,25 +50,14 @@ class LivePageState extends State<LivePage> {
   void dispose() {
     super.dispose();
 
-    giftService.recvNotifier.removeListener(onGiftReceived);
-    giftService.uninit();
+    ZegoGiftManager().service.recvNotifier.removeListener(onGiftReceived);
+    ZegoGiftManager().service.uninit();
   }
 
   @override
   Widget build(BuildContext context) {
     final hostConfig = ZegoUIKitPrebuiltLiveStreamingConfig.host(
       plugins: [ZegoUIKitSignalingPlugin()],
-    );
-
-    final giftButton = ZegoMenuBarExtendButton(
-      index: 0,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-        onPressed: () {
-          showSoundEffectSheet(context);
-        },
-        child: const Icon(Icons.blender),
-      ),
     );
 
     final audienceConfig = ZegoUIKitPrebuiltLiveStreamingConfig.audience(
@@ -91,20 +77,33 @@ class LivePageState extends State<LivePage> {
         config: (widget.isHost ? hostConfig : audienceConfig)
           ..foreground = const Stack(
             children: [
-              GiftPlayerOverlay(),
+              ZegoGiftPlayer(),
             ],
           )
           ..onLiveStreamingStateUpdate = (state) {
             if (ZegoLiveStreamingState.idle == state) {
-              ZegoGiftPlayer().clear();
+              ZegoGiftManager().playList.clear();
             }
           },
       ),
     );
   }
 
+  ZegoMenuBarExtendButton get giftButton => ZegoMenuBarExtendButton(
+        index: 0,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+          onPressed: () {
+            showSoundEffectSheet(context);
+          },
+          child: const Icon(Icons.blender),
+        ),
+      );
+
   void onGiftReceived() {
-    final giftData = giftService.recvNotifier.value ?? ZegoGiftData.empty();
+    final giftData = ZegoGiftManager().service.recvNotifier.value ??
+        ZegoGiftProtocolItem.empty();
+
     // ZegoGiftPlayer().play(
     //   context,
     //   giftData,

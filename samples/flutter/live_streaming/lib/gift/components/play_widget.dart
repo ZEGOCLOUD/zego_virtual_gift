@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:live_streaming_cohost/gift/manager.dart';
 
 import 'package:svgaplayer_flutter/parser.dart';
 import 'package:svgaplayer_flutter/player.dart';
 import 'package:svgaplayer_flutter/proto/svga.pb.dart';
 
-import 'cache.dart';
-import 'player.dart';
+import '../defines.dart';
 
-class GiftPlayerWidget extends StatefulWidget {
-  const GiftPlayerWidget({
+class ZegoGiftPlayerWidget extends StatefulWidget {
+  const ZegoGiftPlayerWidget({
     Key? key,
     required this.onPlayEnd,
-    required this.data,
+    required this.giftData,
   }) : super(key: key);
 
   final VoidCallback onPlayEnd;
-  final GiftPlayerData data;
+  final ZegoGiftItem giftData;
 
   @override
-  State<GiftPlayerWidget> createState() => GiftPlayerWidgetState();
+  State<ZegoGiftPlayerWidget> createState() => ZegoGiftPlayerWidgetState();
 }
 
-class GiftPlayerWidgetState extends State<GiftPlayerWidget>
+class ZegoGiftPlayerWidgetState extends State<ZegoGiftPlayerWidget>
     with SingleTickerProviderStateMixin {
   SVGAAnimationController? animationController;
 
@@ -32,11 +32,12 @@ class GiftPlayerWidgetState extends State<GiftPlayerWidget>
   void initState() {
     super.initState();
 
-    debugPrint('load ${widget.data} begin:${DateTime.now().toString()}');
-    switch (widget.data.source) {
-      case GiftPlayerSource.url:
-        ZegoGiftCache()
-            .readFromURL(url: widget.data.value as String? ?? '')
+    debugPrint('load ${widget.giftData} begin:${DateTime.now().toString()}');
+    switch (widget.giftData.source) {
+      case ZegoGiftSource.url:
+        ZegoGiftManager()
+            .cache
+            .readFromURL(url: widget.giftData.sourceURL)
             .then((byteData) {
           movieEntity = SVGAParser.shared.decodeFromBuffer(byteData);
 
@@ -44,21 +45,16 @@ class GiftPlayerWidgetState extends State<GiftPlayerWidget>
           setState(() {});
         });
         break;
-      case GiftPlayerSource.asset:
-        ZegoGiftCache()
-            .readFromAsset(assetPath: widget.data.value as String? ?? '')
+      case ZegoGiftSource.asset:
+        ZegoGiftManager()
+            .cache
+            .readFromAsset(widget.giftData.sourceURL)
             .then((byteData) {
           movieEntity = SVGAParser.shared.decodeFromBuffer(byteData);
 
           loadedNotifier.value = true;
           setState(() {});
         });
-        break;
-      case GiftPlayerSource.bytes:
-        movieEntity = SVGAParser.shared
-            .decodeFromBuffer(widget.data.value as List<int>? ?? []);
-
-        loadedNotifier.value = true;
         break;
     }
   }
@@ -88,7 +84,7 @@ class GiftPlayerWidgetState extends State<GiftPlayerWidget>
           );
         }
 
-        debugPrint('load ${widget.data} done:${DateTime.now().toString()}');
+        debugPrint('load ${widget.giftData} done:${DateTime.now().toString()}');
 
         return FutureBuilder<MovieEntity>(
           future: movieEntity,

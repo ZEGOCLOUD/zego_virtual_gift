@@ -1,114 +1,112 @@
-import 'package:live_streaming_cohost/gift/player.dart';
+import 'defines.dart';
 
-import 'grid.dart';
-
-final List<ZegoGiftSheetListItemData> giftItemList = [
-  ZegoGiftSheetListItemData(
+final List<ZegoGiftItem> giftItemList = [
+  ZegoGiftItem(
     name: '666',
     icon: 'assets/gift/666.png',
-    url: 'assets/gift/666.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/666.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Airplane',
     icon: 'assets/gift/airplane.png',
-    url: 'assets/gift/airplane.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/airplane.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Blossom',
     icon: 'assets/gift/blossom.png',
-    url: 'assets/gift/blossom.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/blossom.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Boat',
     icon: 'assets/gift/boat.png',
-    url: 'assets/gift/boat.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/boat.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Kiss',
     icon: 'assets/gift/kiss.png',
-    url: 'assets/gift/kiss.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/kiss.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Kiss v2',
     icon: 'assets/gift/kiss2.png',
-    url: 'assets/gift/kiss2.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/kiss2.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Love',
     icon: 'assets/gift/love.png',
-    url: 'assets/gift/love.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/love.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Mask',
     icon: 'assets/gift/mask.png',
-    url: 'assets/gift/mask.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/mask.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Park',
     icon: 'assets/gift/park.png',
-    url: 'assets/gift/park.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/park.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'rabbit',
     icon: 'assets/gift/rabbit.png',
-    url: 'assets/gift/rabbit.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/rabbit.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Race Car',
     icon: 'assets/gift/racecar.png',
-    url: 'assets/gift/racecar.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/racecar.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Rocket',
     icon: 'assets/gift/rocket.png',
-    url: 'assets/gift/rocket.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/rocket.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Rocket v2',
     icon: 'assets/gift/rocket2.png',
-    url: 'assets/gift/rocket2.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/rocket2.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Rose',
     icon: 'assets/gift/rose.png',
-    url: 'assets/gift/rose.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/rose.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Soap',
     icon: 'assets/gift/soap.png',
-    url: 'assets/gift/soap.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/soap.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Space Ship',
     icon: 'assets/gift/spaceship.png',
-    url: 'assets/gift/spaceship.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/spaceship.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Wind Mill',
     icon: 'assets/gift/windmill.png',
-    url: 'assets/gift/windmill.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/windmill.svga',
+    source: ZegoGiftSource.asset,
   ),
-  ZegoGiftSheetListItemData(
+  ZegoGiftItem(
     name: 'Yacht',
     icon: 'assets/gift/yacht.png',
-    url: 'assets/gift/yacht.svga',
-    source: GiftPlayerSource.asset,
+    sourceURL: 'assets/gift/yacht.svga',
+    source: ZegoGiftSource.asset,
   ),
 ];

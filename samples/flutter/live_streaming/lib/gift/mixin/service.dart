@@ -1,25 +1,12 @@
-// Flutter imports:
-import 'dart:async';
-import 'dart:convert';
+part of '../manager.dart';
 
-import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
-import 'package:live_streaming_cohost/gift/player.dart';
-import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
+mixin Service {
+  final _serviceImpl = ServiceImpl();
 
-import 'cache.dart';
-import 'grid.dart';
-import 'dart:typed_data';
+  ServiceImpl get service => _serviceImpl;
+}
 
-class ZegoGiftService {
-  static final ZegoGiftService _singleton = ZegoGiftService._internal();
-
-  factory ZegoGiftService() {
-    return _singleton;
-  }
-
-  ZegoGiftService._internal();
-
+class ServiceImpl {
   int _appID = 0;
   String _appSecret = '';
   String _liveID = '';
@@ -28,7 +15,7 @@ class ZegoGiftService {
 
   List<StreamSubscription<dynamic>?> _subscriptions = [];
 
-  final recvNotifier = ValueNotifier<ZegoGiftData?>(null);
+  final recvNotifier = ValueNotifier<ZegoGiftProtocolItem?>(null);
 
   void init({
     required int appID,
@@ -67,9 +54,9 @@ class ZegoGiftService {
       liveID: _liveID,
       localUserID: _localUserID,
       localUserName: _localUserName,
-      giftData: ZegoGiftData(
-        giftName: name,
-        giftCount: count,
+      giftItem: ZegoGiftProtocolItem(
+        name: name,
+        count: count,
       ),
     ).toJson();
 
@@ -105,25 +92,25 @@ class ZegoGiftService {
       debugPrint('onInRoomCommandMessageReceived: $message');
       if (senderUserID != _localUserID) {
         //  todo
-        recvNotifier.value = ZegoGiftData(
-          giftName: 'xx',
-          giftCount: 1,
+        recvNotifier.value = ZegoGiftProtocolItem(
+          name: 'xx',
+          count: 1,
         );
       }
     }
   }
 }
 
-class ZegoGiftData {
-  String giftName = '';
-  int giftCount = 0;
+class ZegoGiftProtocolItem {
+  String name = '';
+  int count = 0;
 
-  ZegoGiftData({
-    required this.giftName,
-    required this.giftCount,
+  ZegoGiftProtocolItem({
+    required this.name,
+    required this.count,
   });
 
-  ZegoGiftData.empty();
+  ZegoGiftProtocolItem.empty();
 }
 
 class ZegoGiftProtocol {
@@ -132,7 +119,7 @@ class ZegoGiftProtocol {
   String liveID = '';
   String localUserID = '';
   String localUserName = '';
-  ZegoGiftData giftData;
+  ZegoGiftProtocolItem giftItem;
 
   ZegoGiftProtocol({
     required this.appID,
@@ -140,7 +127,7 @@ class ZegoGiftProtocol {
     required this.liveID,
     required this.localUserID,
     required this.localUserName,
-    required this.giftData,
+    required this.giftItem,
   });
 
   String toJson() => json.encode({
@@ -149,8 +136,8 @@ class ZegoGiftProtocol {
         'room_id': liveID,
         'user_id': localUserID,
         'user_name': localUserName,
-        'gift_name': giftData.giftName,
-        'gift_count': giftData.giftCount,
+        'gift_name': giftItem.name,
+        'gift_count': giftItem.count,
         'timestamp': DateTime.now().millisecondsSinceEpoch,
       });
 
@@ -161,9 +148,9 @@ class ZegoGiftProtocol {
       liveID: json['room_id'] ?? '',
       localUserID: json['user_id'] ?? '',
       localUserName: json['user_name'] ?? '',
-      giftData: ZegoGiftData(
-        giftName: json['gift_name'] ?? 0,
-        giftCount: json['gift_count'] ?? 0,
+      giftItem: ZegoGiftProtocolItem(
+        name: json['gift_name'] ?? 0,
+        count: json['gift_count'] ?? 0,
       ),
     );
   }
