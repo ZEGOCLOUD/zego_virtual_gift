@@ -17,9 +17,9 @@ class CacheImpl {
           });
           break;
         case ZegoGiftSource.asset:
-          readFromAsset(assetPath: itemData.sourceURL).then((value) {
-            debugPrint('${DateTime.now()} cache done: ${itemData.sourceURL} ');
-          });
+          // readFromAsset(itemData.sourceURL).then((value) {
+          //   debugPrint('${DateTime.now()} cache done: ${itemData.sourceURL} ');
+          // });
           break;
       }
     }

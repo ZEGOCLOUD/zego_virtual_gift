@@ -7,15 +7,33 @@ import 'package:svgaplayer_flutter/proto/svga.pb.dart';
 
 import '../defines.dart';
 
+class PlayData {
+  ZegoGiftItem giftItem;
+  int count;
+
+  PlayData({
+    required this.giftItem,
+    this.count = 1,
+  });
+}
+
 class ZegoGiftPlayerWidget extends StatefulWidget {
   const ZegoGiftPlayerWidget({
     Key? key,
     required this.onPlayEnd,
-    required this.giftData,
+    required this.playData,
+    this.size,
+    this.textStyle,
   }) : super(key: key);
 
   final VoidCallback onPlayEnd;
-  final ZegoGiftItem giftData;
+  final PlayData playData;
+
+  /// restrict the display area size for the gift animation
+  final Size? size;
+
+  /// the gift count text style
+  final TextStyle? textStyle;
 
   @override
   State<ZegoGiftPlayerWidget> createState() => ZegoGiftPlayerWidgetState();
@@ -28,16 +46,31 @@ class ZegoGiftPlayerWidgetState extends State<ZegoGiftPlayerWidget>
   final loadedNotifier = ValueNotifier<bool>(false);
   late Future<MovieEntity> movieEntity;
 
+  double get fontSize => 15;
+
+  Size get displaySize => null != widget.size
+      ? Size(
+          (widget.size!.width) -
+              widget.playData.count.toString().length * fontSize,
+          widget.size!.height,
+        )
+      : MediaQuery.of(context).size;
+
+  Size get countSize => Size(
+        (widget.playData.count.toString().length + 2) * fontSize * 1.2,
+        fontSize + 2,
+      );
+
   @override
   void initState() {
     super.initState();
 
-    debugPrint('load ${widget.giftData} begin:${DateTime.now().toString()}');
-    switch (widget.giftData.source) {
+    debugPrint('load ${widget.playData} begin:${DateTime.now().toString()}');
+    switch (widget.playData.giftItem.source) {
       case ZegoGiftSource.url:
         ZegoGiftManager()
             .cache
-            .readFromURL(url: widget.giftData.sourceURL)
+            .readFromURL(url: widget.playData.giftItem.sourceURL)
             .then((byteData) {
           movieEntity = SVGAParser.shared.decodeFromBuffer(byteData);
 
@@ -48,7 +81,7 @@ class ZegoGiftPlayerWidgetState extends State<ZegoGiftPlayerWidget>
       case ZegoGiftSource.asset:
         ZegoGiftManager()
             .cache
-            .readFromAsset(widget.giftData.sourceURL)
+            .readFromAsset(widget.playData.giftItem.sourceURL)
             .then((byteData) {
           movieEntity = SVGAParser.shared.decodeFromBuffer(byteData);
 
@@ -84,7 +117,8 @@ class ZegoGiftPlayerWidgetState extends State<ZegoGiftPlayerWidget>
           );
         }
 
-        debugPrint('load ${widget.giftData} done:${DateTime.now().toString()}');
+        debugPrint(
+            'load ${widget.playData.giftItem} done:${DateTime.now().toString()}');
 
         return FutureBuilder<MovieEntity>(
           future: movieEntity,
@@ -95,7 +129,52 @@ class ZegoGiftPlayerWidgetState extends State<ZegoGiftPlayerWidget>
                 ..forward().whenComplete(() {
                   widget.onPlayEnd();
                 }));
-              return SVGAImage(animationController!);
+
+              final countWidget = widget.playData.count > 1
+                  ? SizedBox.fromSize(
+                      size: countSize,
+                      child: Text(
+                        'x ${widget.playData.count}',
+                        style: widget.textStyle ??
+                            TextStyle(
+                              fontSize: fontSize,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    )
+                  : const SizedBox.shrink();
+
+              if (displaySize.width < MediaQuery.of(context).size.width) {
+                ///  width < 1/2
+                return Row(
+                  children: [
+                    SizedBox.fromSize(
+                      size: displaySize,
+                      child: SVGAImage(animationController!),
+                    ),
+                    countWidget,
+                  ],
+                );
+              }
+
+              return SizedBox.fromSize(
+                size: displaySize,
+                child: Stack(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                        child: SizedBox.fromSize(
+                      size: displaySize,
+                      child: SVGAImage(animationController!),
+                    )),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: countWidget,
+                    ),
+                  ],
+                ),
+              );
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             } else {

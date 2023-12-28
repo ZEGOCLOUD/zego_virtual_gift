@@ -7,8 +7,8 @@ mixin PlayList {
 }
 
 class PlayListImpl {
-  final playingDataNotifier = ValueNotifier<ZegoGiftItem?>(null);
-  List<ZegoGiftItem> pendingPlaylist = [];
+  final playingDataNotifier = ValueNotifier<PlayData?>(null);
+  List<PlayData> pendingPlaylist = [];
 
   void next() {
     if (pendingPlaylist.isEmpty) {
@@ -19,7 +19,7 @@ class PlayListImpl {
   }
 
   void add(
-    ZegoGiftItem data,
+    PlayData data,
   ) {
     if (playingDataNotifier.value != null) {
       pendingPlaylist.add(data);

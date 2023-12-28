@@ -91,11 +91,8 @@ class ServiceImpl {
       final message = utf8.decode(commandMessage.message);
       debugPrint('onInRoomCommandMessageReceived: $message');
       if (senderUserID != _localUserID) {
-        //  todo
-        recvNotifier.value = ZegoGiftProtocolItem(
-          name: 'xx',
-          count: 1,
-        );
+        final gift = ZegoGiftProtocol.fromJson(message);
+        recvNotifier.value = gift.giftItem;
       }
     }
   }
@@ -141,7 +138,13 @@ class ZegoGiftProtocol {
         'timestamp': DateTime.now().millisecondsSinceEpoch,
       });
 
-  factory ZegoGiftProtocol.fromJson(Map<String, dynamic> json) {
+  factory ZegoGiftProtocol.fromJson(String jsonData) {
+    Map<String, dynamic> json = {};
+    try {
+      json = jsonDecode(jsonData) as Map<String, dynamic>? ?? {};
+    } catch (e) {
+      debugPrint('protocol data is not json:$jsonData');
+    }
     return ZegoGiftProtocol(
       appID: json['app_id'] ?? 0,
       appSecret: json['server_secret'] ?? '',

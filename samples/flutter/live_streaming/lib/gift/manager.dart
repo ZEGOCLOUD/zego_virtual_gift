@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 
 import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
+import 'components/play_widget.dart';
 import 'defines.dart';
 
 part 'mixin/play_list.dart';
