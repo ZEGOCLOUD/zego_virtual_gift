@@ -17,9 +17,9 @@ class CacheImpl {
           });
           break;
         case ZegoGiftSource.asset:
-          // readFromAsset(itemData.sourceURL).then((value) {
-          //   debugPrint('${DateTime.now()} cache done: ${itemData.sourceURL} ');
-          // });
+          readFromAsset(itemData.sourceURL).then((value) {
+            debugPrint('${DateTime.now()} cache done: ${itemData.sourceURL} ');
+          });
           break;
       }
     }
@@ -27,21 +27,20 @@ class CacheImpl {
 
   Future<List<int>> readFromURL({required String url}) async {
     List<int> result = kTransparentImage.toList();
-    final FileInfo? info = await DefaultCacheManager().getFileFromCache(
-      url,
-      // ignoreMemCache: true,
-    );
+    final FileInfo? info = await DefaultCacheManager().getFileFromCache(url);
     if (info == null) {
       try {
         final Uri uri = Uri.parse(url);
         final http.Response response = await http.get(uri);
         if (response.statusCode == HttpStatus.ok) {
           result = response.bodyBytes.toList();
-          await DefaultCacheManager().putFile(url, response.bodyBytes);
-          print("cache download done:$url");
+
+          DefaultCacheManager().putFile(url, response.bodyBytes).then((value) {
+            print("cache download done:$url");
+          });
         } else {}
       } on Exception catch (e, s) {
-        print("cache read Exception: $e $s, url:$url");
+        print("download Exception: $e $s, url:$url");
       }
     } else {
       result = info.file.readAsBytesSync().toList();
@@ -52,14 +51,15 @@ class CacheImpl {
 
   Future<List<int>> readFromAsset(String assetPath) async {
     List<int> result = kTransparentImage.toList();
-    final FileInfo? info = await DefaultCacheManager().getFileFromCache(
-      assetPath,
-      // ignoreMemCache: true,
-    );
+    final FileInfo? info =
+        await DefaultCacheManager().getFileFromCache(assetPath);
     if (info == null) {
       await loadAssetData(assetPath).then((bytesData) async {
         result = bytesData;
-        await DefaultCacheManager().putFile(assetPath, bytesData);
+
+        DefaultCacheManager().putFile(assetPath, bytesData).then((value) {
+          print("cache asset done:$assetPath");
+        });
       });
     } else {
       result = info.file.readAsBytesSync().toList();
