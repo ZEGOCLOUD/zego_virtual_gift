@@ -2,20 +2,6 @@ import 'defines.dart';
 
 final List<ZegoGiftItem> giftItemList = [
   ZegoGiftItem(
-    name: 'Universe',
-    sourceURL:
-        'https://divinenew-prod.s3.ap-south-1.amazonaws.com/lotti2/2893.svga',
-    source: ZegoGiftSource.url,
-    weight: 500,
-  ),
-  ZegoGiftItem(
-    name: 'Kun',
-    sourceURL:
-        'https://divinenew-prod.s3.ap-south-1.amazonaws.com/lotti2/3072.svga',
-    source: ZegoGiftSource.url,
-    weight: 100,
-  ),
-  ZegoGiftItem(
     name: 'Airplane',
     icon: 'assets/gift/airplane.png',
     sourceURL: 'assets/gift/airplane.svga',
