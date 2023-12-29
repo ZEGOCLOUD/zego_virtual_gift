@@ -8,7 +8,6 @@ mixin Service {
 
 class ServiceImpl {
   int _appID = 0;
-  String _appSecret = '';
   String _liveID = '';
   String _localUserID = '';
   String _localUserName = '';
@@ -19,13 +18,11 @@ class ServiceImpl {
 
   void init({
     required int appID,
-    required String appSecret,
     required String liveID,
     required String localUserID,
     required String localUserName,
   }) {
     _appID = appID;
-    _appSecret = appSecret;
     _liveID = liveID;
     _localUserID = localUserID;
     _localUserName = localUserName;
@@ -50,7 +47,6 @@ class ServiceImpl {
   }) async {
     final data = ZegoGiftProtocol(
       appID: _appID,
-      appSecret: _appSecret,
       liveID: _liveID,
       localUserID: _localUserID,
       localUserName: _localUserName,
@@ -59,6 +55,21 @@ class ServiceImpl {
         count: count,
       ),
     ).toJson();
+
+    /// This is just a demo for synchronous display effects.
+    ///
+    /// If it involves billing or your business logic,
+    /// please use the SERVER API to send a Message of type ZIMCommandMessage.
+    ///
+    /// https://docs.zegocloud.com/article/16201
+    debugPrint('! ${'*' * 80}');
+    debugPrint(
+        '! ** Warning: This is just a demo for synchronous display effects.');
+    debugPrint('! ** ');
+    debugPrint('! ** If it involves billing or your business logic,');
+    debugPrint(
+        '! ** please use the SERVER API to send a Message of type ZIMCommandMessage.');
+    debugPrint('! ${'*' * 80}');
 
     debugPrint('try send gift, name:$name, count:$count, data:$data');
     ZegoUIKit()
@@ -112,7 +123,6 @@ class ZegoGiftProtocolItem {
 
 class ZegoGiftProtocol {
   int appID = 0;
-  String appSecret = '';
   String liveID = '';
   String localUserID = '';
   String localUserName = '';
@@ -120,7 +130,6 @@ class ZegoGiftProtocol {
 
   ZegoGiftProtocol({
     required this.appID,
-    required this.appSecret,
     required this.liveID,
     required this.localUserID,
     required this.localUserName,
@@ -129,7 +138,6 @@ class ZegoGiftProtocol {
 
   String toJson() => json.encode({
         'app_id': appID,
-        'server_secret': appSecret,
         'room_id': liveID,
         'user_id': localUserID,
         'user_name': localUserName,
@@ -147,7 +155,6 @@ class ZegoGiftProtocol {
     }
     return ZegoGiftProtocol(
       appID: json['app_id'] ?? 0,
-      appSecret: json['server_secret'] ?? '',
       liveID: json['room_id'] ?? '',
       localUserID: json['user_id'] ?? '',
       localUserName: json['user_name'] ?? '',

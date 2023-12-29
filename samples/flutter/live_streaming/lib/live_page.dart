@@ -39,7 +39,6 @@ class LivePageState extends State<LivePage> {
       //  todo
       ZegoGiftManager().service.init(
             appID: yourAppID,
-            appSecret: yourServerSecret,
             liveID: widget.liveID,
             localUserID: widget.localUserID,
             localUserName: 'user_${widget.localUserID}',
