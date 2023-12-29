@@ -3,13 +3,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter/services.dart';
 
-import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:transparent_image/transparent_image.dart';
+import 'package:zego_uikit/zego_uikit.dart';
 
 import 'components/play_widget.dart';
 import 'defines.dart';

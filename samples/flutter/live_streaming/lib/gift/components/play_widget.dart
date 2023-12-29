@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:live_streaming_cohost/gift/manager.dart';
 
 import 'package:svgaplayer_flutter/parser.dart';
 import 'package:svgaplayer_flutter/player.dart';
 import 'package:svgaplayer_flutter/proto/svga.pb.dart';
 
 import '../defines.dart';
+import '../manager.dart';
 
 class PlayData {
   ZegoGiftItem giftItem;
