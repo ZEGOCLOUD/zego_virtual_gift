@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'components/play_widget.dart';
 import 'data.dart';
 import 'defines.dart';
 import 'manager.dart';

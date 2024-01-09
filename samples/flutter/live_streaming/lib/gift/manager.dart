@@ -10,7 +10,6 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:zego_uikit/zego_uikit.dart';
 
-import 'components/play_widget.dart';
 import 'defines.dart';
 
 part 'mixin/play_list.dart';

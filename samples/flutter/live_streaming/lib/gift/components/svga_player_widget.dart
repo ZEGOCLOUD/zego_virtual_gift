@@ -7,18 +7,8 @@ import 'package:svgaplayer_flutter/proto/svga.pb.dart';
 import '../defines.dart';
 import '../manager.dart';
 
-class PlayData {
-  ZegoGiftItem giftItem;
-  int count;
-
-  PlayData({
-    required this.giftItem,
-    this.count = 1,
-  });
-}
-
-class ZegoGiftPlayerWidget extends StatefulWidget {
-  const ZegoGiftPlayerWidget({
+class ZegoSvgaPlayerWidget extends StatefulWidget {
+  const ZegoSvgaPlayerWidget({
     Key? key,
     required this.onPlayEnd,
     required this.playData,
@@ -36,10 +26,10 @@ class ZegoGiftPlayerWidget extends StatefulWidget {
   final TextStyle? textStyle;
 
   @override
-  State<ZegoGiftPlayerWidget> createState() => ZegoGiftPlayerWidgetState();
+  State<ZegoSvgaPlayerWidget> createState() => ZegoSvgaPlayerWidgetState();
 }
 
-class ZegoGiftPlayerWidgetState extends State<ZegoGiftPlayerWidget>
+class ZegoSvgaPlayerWidgetState extends State<ZegoSvgaPlayerWidget>
     with SingleTickerProviderStateMixin {
   SVGAAnimationController? animationController;
 

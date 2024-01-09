@@ -2,6 +2,33 @@ import 'defines.dart';
 
 final List<ZegoGiftItem> giftItemList = [
   ZegoGiftItem(
+    name: 'Music Box1',
+    icon: 'assets/gift/musicBox.png',
+    sourceURL:
+        'https://storage.zego.im/sdk-doc/Pics/zegocloud/gift/music_box.mp4',
+    source: ZegoGiftSource.url,
+    type: ZegoGiftType.mp4,
+    weight: 1,
+  ),
+  ZegoGiftItem(
+    name: 'Music Box2',
+    icon: 'assets/gift/musicBox.png',
+    sourceURL:
+        'https://storage.zego.im/sdk-doc/Pics/zegocloud/gift/music_box.mp4',
+    source: ZegoGiftSource.url,
+    type: ZegoGiftType.mp4,
+    weight: 10,
+  ),
+  ZegoGiftItem(
+    name: 'Music Box3',
+    icon: 'assets/gift/musicBox.png',
+    sourceURL:
+        'https://storage.zego.im/sdk-doc/Pics/zegocloud/gift/music_box.mp4',
+    source: ZegoGiftSource.url,
+    type: ZegoGiftType.mp4,
+    weight: 100,
+  ),
+  ZegoGiftItem(
     name: 'Airplane',
     icon: 'assets/gift/airplane.png',
     sourceURL: 'assets/gift/airplane.svga',
