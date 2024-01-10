@@ -65,9 +65,7 @@ class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget>
       if (event == ZegoMediaPlayerFirstFrameEvent.VideoRendered) {}
     };
 
-    Mp4PlayerManager()
-        .createMediaPlayer(reusePlayerView: true)
-        .then((view) async {
+    Mp4PlayerManager().createMediaPlayer().then((view) async {
       _mediaplayerWidget = view;
       var url = await ZegoGiftManager()
           .cache
