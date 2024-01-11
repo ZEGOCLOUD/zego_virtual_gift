@@ -28,7 +28,7 @@ class ZegoMp4PlayerWidget extends StatefulWidget {
 
 class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget>
     with SingleTickerProviderStateMixin {
-  Widget? _mediaplayerWidget;
+  Widget? _mediaPlayerWidget;
 
   double get fontSize => 15;
 
@@ -50,23 +50,35 @@ class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget>
     super.initState();
 
     debugPrint('load ${widget.playData} begin:${DateTime.now().toString()}');
-    Mp4PlayerManager.onMediaPlayerStateUpdate = (state, errorCode) {
-      debugPrint('Media Player State: $state');
-      if (state == ZegoMediaPlayerState.Playing) {
-        setState(() {});
-      }
-      if (state == ZegoMediaPlayerState.PlayEnded) {
-        widget.onPlayEnd();
-      }
-    };
+    Mp4PlayerManager().registerCallbacks(
+      onMediaPlayerStateUpdate: (state, errorCode) {
+        if (!context.mounted) {
+          return;
+        }
 
-    Mp4PlayerManager.onMediaPlayerFirstFrameEvent = (event) {
-      debugPrint('onMediaPlayerFirstFrameEvent, $event');
-      if (event == ZegoMediaPlayerFirstFrameEvent.VideoRendered) {}
-    };
+        debugPrint('Media Player State: $state');
+        switch (state) {
+          case ZegoMediaPlayerState.NoPlay:
+            break;
+          case ZegoMediaPlayerState.Playing:
+            setState(() {});
+            break;
+          case ZegoMediaPlayerState.Pausing:
+            break;
+          case ZegoMediaPlayerState.PlayEnded:
+            Mp4PlayerManager().unregisterCallbacks();
+            widget.onPlayEnd();
+            break;
+        }
+      },
+      onMediaPlayerFirstFrameEvent: (event) {
+        debugPrint('onMediaPlayerFirstFrameEvent, $event');
+        if (event == ZegoMediaPlayerFirstFrameEvent.VideoRendered) {}
+      },
+    );
 
     Mp4PlayerManager().createMediaPlayer().then((view) async {
-      _mediaplayerWidget = view;
+      _mediaPlayerWidget = view;
       var url = await ZegoGiftManager()
           .cache
           .getFilePathFromCache(widget.playData.giftItem.sourceURL);
@@ -102,7 +114,7 @@ class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget>
         children: [
           SizedBox.fromSize(
             size: displaySize,
-            child: _mediaplayerWidget,
+            child: _mediaPlayerWidget,
           ),
           countWidget,
         ],
@@ -115,7 +127,7 @@ class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget>
         Center(
           child: SizedBox.fromSize(
             size: displaySize,
-            child: _mediaplayerWidget,
+            child: _mediaPlayerWidget,
           ),
         ),
         Align(

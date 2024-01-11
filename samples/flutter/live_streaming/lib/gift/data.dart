@@ -33,6 +33,7 @@ final List<ZegoGiftItem> giftItemList = [
     icon: 'assets/gift/airplane.png',
     sourceURL: 'assets/gift/airplane.svga',
     source: ZegoGiftSource.asset,
+    type: ZegoGiftType.svga,
     weight: 100,
   ),
   ZegoGiftItem(
@@ -40,6 +41,7 @@ final List<ZegoGiftItem> giftItemList = [
     icon: 'assets/gift/kiss.png',
     sourceURL: 'assets/gift/kiss.svga',
     source: ZegoGiftSource.asset,
+    type: ZegoGiftType.svga,
     weight: 1,
   ),
   ZegoGiftItem(
@@ -47,6 +49,7 @@ final List<ZegoGiftItem> giftItemList = [
     icon: 'assets/gift/park.png',
     sourceURL: 'assets/gift/park.svga',
     source: ZegoGiftSource.asset,
+    type: ZegoGiftType.svga,
     weight: 10,
   ),
   ZegoGiftItem(
@@ -54,6 +57,7 @@ final List<ZegoGiftItem> giftItemList = [
     icon: 'assets/gift/racecar.png',
     sourceURL: 'assets/gift/racecar.svga',
     source: ZegoGiftSource.asset,
+    type: ZegoGiftType.svga,
     weight: 10,
   ),
   ZegoGiftItem(
@@ -61,6 +65,7 @@ final List<ZegoGiftItem> giftItemList = [
     icon: 'assets/gift/rocket.png',
     sourceURL: 'assets/gift/rocket.svga',
     source: ZegoGiftSource.asset,
+    type: ZegoGiftType.svga,
     weight: 10,
   ),
   ZegoGiftItem(
@@ -68,6 +73,7 @@ final List<ZegoGiftItem> giftItemList = [
     icon: 'assets/gift/rose.png',
     sourceURL: 'assets/gift/rose.svga',
     source: ZegoGiftSource.asset,
+    type: ZegoGiftType.svga,
     weight: 1,
   ),
   ZegoGiftItem(
@@ -75,6 +81,7 @@ final List<ZegoGiftItem> giftItemList = [
     icon: 'assets/gift/yacht.png',
     sourceURL: 'assets/gift/yacht.svga',
     source: ZegoGiftSource.asset,
+    type: ZegoGiftType.svga,
     weight: 100,
   ),
 ];

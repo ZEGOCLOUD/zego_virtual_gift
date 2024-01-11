@@ -1,27 +1,45 @@
 import 'package:flutter/cupertino.dart';
 import 'package:zego_express_engine/zego_express_engine.dart';
+import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
-class Mp4PlayerManager {
+class Mp4PlayerManager with ZegoUIKitMediaEventInterface {
   static final Mp4PlayerManager _instance = Mp4PlayerManager._internal();
+
   factory Mp4PlayerManager() {
+    ZegoUIKit().registerMediaEvent(_instance);
+
     return _instance;
   }
+
   Mp4PlayerManager._internal();
 
-  Widget? _mediaplayerWidget;
+  Widget? _mediaPlayerWidget;
   ZegoMediaPlayer? _mediaPlayer;
   int _mediaPlayerViewID = -1;
 
   /// callbacks
-  static void Function(ZegoMediaPlayerState state, int errorCode)?
-      onMediaPlayerStateUpdate;
-  static void Function(ZegoMediaPlayerFirstFrameEvent event)?
-      onMediaPlayerFirstFrameEvent;
+  void Function(ZegoMediaPlayerState state, int errorCode)?
+      _onMediaPlayerStateUpdate;
+  void Function(ZegoMediaPlayerFirstFrameEvent event)?
+      _onMediaPlayerFirstFrameEvent;
+
+  void registerCallbacks({
+    Function(ZegoMediaPlayerState state, int errorCode)?
+        onMediaPlayerStateUpdate,
+    Function(ZegoMediaPlayerFirstFrameEvent event)?
+        onMediaPlayerFirstFrameEvent,
+  }) {
+    _onMediaPlayerStateUpdate = onMediaPlayerStateUpdate;
+    _onMediaPlayerFirstFrameEvent = onMediaPlayerFirstFrameEvent;
+  }
+
+  void unregisterCallbacks() {
+    _onMediaPlayerStateUpdate = null;
+    _onMediaPlayerFirstFrameEvent = null;
+  }
 
   /// create media player
   Future<Widget?> createMediaPlayer({bool reusePlayerView = false}) async {
-    _initCallback();
-
     _mediaPlayer ??= await ZegoExpressEngine.instance.createMediaPlayer();
 
     if (!reusePlayerView) {
@@ -29,7 +47,7 @@ class Mp4PlayerManager {
     }
     // create or reuse old widget
     if (_mediaPlayerViewID == -1) {
-      _mediaplayerWidget =
+      _mediaPlayerWidget =
           await ZegoExpressEngine.instance.createCanvasView((viewID) {
         _mediaPlayerViewID = viewID;
         _mediaPlayer?.setPlayerCanvas(ZegoCanvas(viewID, alphaBlend: true));
@@ -38,17 +56,17 @@ class Mp4PlayerManager {
       _mediaPlayer
           ?.setPlayerCanvas(ZegoCanvas(_mediaPlayerViewID, alphaBlend: true));
     }
-    return _mediaplayerWidget;
+    return _mediaPlayerWidget;
   }
 
-  void _initCallback() {
-    ZegoExpressEngine.onMediaPlayerStateUpdate =
-        (mediaPlayer, state, errorCode) {
-      onMediaPlayerStateUpdate?.call(state, errorCode);
-    };
-    ZegoExpressEngine.onMediaPlayerFirstFrameEvent = (mediaPlayer, event) {
-      onMediaPlayerFirstFrameEvent?.call(event);
-    };
+  @override
+  void onMediaPlayerStateUpdate(mediaPlayer, state, errorCode) {
+    _onMediaPlayerStateUpdate?.call(state, errorCode);
+  }
+
+  @override
+  void onMediaPlayerFirstFrameEvent(mediaPlayer, event) {
+    _onMediaPlayerFirstFrameEvent?.call(event);
   }
 
   void destroyMediaPlayer() {
