@@ -13,9 +13,8 @@
 		86080926292C7C6800387685 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86080924292C7C6800387685 /* Main.storyboard */; };
 		86080928292C7C6A00387685 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86080927292C7C6A00387685 /* Assets.xcassets */; };
 		8608092B292C7C6A00387685 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86080929292C7C6A00387685 /* LaunchScreen.storyboard */; };
+		8E7DA0782B4E7D0000C3BDDB /* Mp4PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7DA0772B4E7D0000C3BDDB /* Mp4PlayerManager.swift */; };
 		8EDF7CFD2AFA1BF50053852A /* GiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDF7CFC2AFA1BF50053852A /* GiftView.swift */; };
-		8EDF7D002AFA1F860053852A /* demo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8EDF7CFE2AFA1F860053852A /* demo.mp4 */; };
-		8EDF7D012AFA1F860053852A /* vap.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8EDF7CFF2AFA1F860053852A /* vap.mp4 */; };
 		A1FE4305F503200993CEA3D2 /* Pods_ZegoUIKitPrebuiltLiveStreamingWithCoHost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBB4431A01168767A4E6EAA0 /* Pods_ZegoUIKitPrebuiltLiveStreamingWithCoHost.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,9 +28,8 @@
 		86080927292C7C6A00387685 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8608092A292C7C6A00387685 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8608092C292C7C6A00387685 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E7DA0772B4E7D0000C3BDDB /* Mp4PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp4PlayerManager.swift; sourceTree = "<group>"; };
 		8EDF7CFC2AFA1BF50053852A /* GiftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiftView.swift; sourceTree = "<group>"; };
-		8EDF7CFE2AFA1F860053852A /* demo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = demo.mp4; sourceTree = "<group>"; };
-		8EDF7CFF2AFA1F860053852A /* vap.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = vap.mp4; sourceTree = "<group>"; };
 		C918D3823A709CD48AF95E3D /* Pods-ZegoUIKitPrebuiltLiveStreamingWithCoHost.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZegoUIKitPrebuiltLiveStreamingWithCoHost.release.xcconfig"; path = "Target Support Files/Pods-ZegoUIKitPrebuiltLiveStreamingWithCoHost/Pods-ZegoUIKitPrebuiltLiveStreamingWithCoHost.release.xcconfig"; sourceTree = "<group>"; };
 		FBB4431A01168767A4E6EAA0 /* Pods_ZegoUIKitPrebuiltLiveStreamingWithCoHost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZegoUIKitPrebuiltLiveStreamingWithCoHost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -81,8 +79,7 @@
 				86080920292C7C6800387685 /* SceneDelegate.swift */,
 				86080922292C7C6800387685 /* ViewController.swift */,
 				8EDF7CFC2AFA1BF50053852A /* GiftView.swift */,
-				8EDF7CFE2AFA1F860053852A /* demo.mp4 */,
-				8EDF7CFF2AFA1F860053852A /* vap.mp4 */,
+				8E7DA0772B4E7D0000C3BDDB /* Mp4PlayerManager.swift */,
 				86080924292C7C6800387685 /* Main.storyboard */,
 				86080927292C7C6A00387685 /* Assets.xcassets */,
 				86080929292C7C6A00387685 /* LaunchScreen.storyboard */,
@@ -160,9 +157,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8EDF7D002AFA1F860053852A /* demo.mp4 in Resources */,
 				8608092B292C7C6A00387685 /* LaunchScreen.storyboard in Resources */,
-				8EDF7D012AFA1F860053852A /* vap.mp4 in Resources */,
 				86080928292C7C6A00387685 /* Assets.xcassets in Resources */,
 				86080926292C7C6800387685 /* Main.storyboard in Resources */,
 			);
@@ -217,6 +212,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E7DA0782B4E7D0000C3BDDB /* Mp4PlayerManager.swift in Sources */,
 				86080923292C7C6800387685 /* ViewController.swift in Sources */,
 				8608091F292C7C6800387685 /* AppDelegate.swift in Sources */,
 				8EDF7CFD2AFA1BF50053852A /* GiftView.swift in Sources */,

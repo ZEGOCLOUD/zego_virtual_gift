@@ -9,7 +9,6 @@ target 'ZegoUIKitPrebuiltLiveStreamingWithCoHost' do
   pod 'ZegoUIKitPrebuiltLiveStreaming'
   pod 'ZegoUIKitSignalingPlugin'
   pod 'ZegoUIKit'
-  pod 'QGVAPlayer'
 
 
 end

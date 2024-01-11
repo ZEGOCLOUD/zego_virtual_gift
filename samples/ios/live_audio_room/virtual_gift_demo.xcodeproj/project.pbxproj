@@ -14,10 +14,8 @@
 		865853CB296BFF9B00AAF955 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 865853CA296BFF9B00AAF955 /* Assets.xcassets */; };
 		865853CE296BFF9B00AAF955 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 865853CC296BFF9B00AAF955 /* LaunchScreen.storyboard */; };
 		865853D6296C020600AAF955 /* LiveAudioHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865853D5296C020600AAF955 /* LiveAudioHeaderView.swift */; };
-		865853D8296C0E9800AAF955 /* sports-car.svga in Resources */ = {isa = PBXBuildFile; fileRef = 865853D7296C0E9800AAF955 /* sports-car.svga */; };
+		8E7DA07C2B4FD70D00C3BDDB /* Mp4PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7DA07B2B4FD70D00C3BDDB /* Mp4PlayerManager.swift */; };
 		8EDF7CF12AF8D13D0053852A /* GiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDF7CF02AF8D13D0053852A /* GiftView.swift */; };
-		8EDF7CF22AF8E0A30053852A /* demo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8EDF7CEF2AF8D04C0053852A /* demo.mp4 */; };
-		8EDF7CFB2AF8EBF00053852A /* vap.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8EDF7CFA2AF8EBF00053852A /* vap.mp4 */; };
 		9DD3BD3B5156FCBFCA3A8977 /* Pods_virtual_gift_demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F06F4C7AA83B8B2DE8A4D2D /* Pods_virtual_gift_demo.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,10 +31,8 @@
 		865853CD296BFF9B00AAF955 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		865853CF296BFF9B00AAF955 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		865853D5296C020600AAF955 /* LiveAudioHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAudioHeaderView.swift; sourceTree = "<group>"; };
-		865853D7296C0E9800AAF955 /* sports-car.svga */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sports-car.svga"; sourceTree = "<group>"; };
-		8EDF7CEF2AF8D04C0053852A /* demo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = demo.mp4; sourceTree = "<group>"; };
+		8E7DA07B2B4FD70D00C3BDDB /* Mp4PlayerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mp4PlayerManager.swift; sourceTree = "<group>"; };
 		8EDF7CF02AF8D13D0053852A /* GiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftView.swift; sourceTree = "<group>"; };
-		8EDF7CFA2AF8EBF00053852A /* vap.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = vap.mp4; sourceTree = "<group>"; };
 		9F06F4C7AA83B8B2DE8A4D2D /* Pods_virtual_gift_demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_virtual_gift_demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -84,15 +80,13 @@
 				865853C1296BFF9900AAF955 /* AppDelegate.swift */,
 				865853C3296BFF9900AAF955 /* SceneDelegate.swift */,
 				865853C5296BFF9900AAF955 /* ViewController.swift */,
-				8EDF7CF02AF8D13D0053852A /* GiftView.swift */,
 				865853D5296C020600AAF955 /* LiveAudioHeaderView.swift */,
+				8EDF7CF02AF8D13D0053852A /* GiftView.swift */,
+				8E7DA07B2B4FD70D00C3BDDB /* Mp4PlayerManager.swift */,
 				865853C7296BFF9900AAF955 /* Main.storyboard */,
 				865853CA296BFF9B00AAF955 /* Assets.xcassets */,
 				865853CC296BFF9B00AAF955 /* LaunchScreen.storyboard */,
 				865853CF296BFF9B00AAF955 /* Info.plist */,
-				8EDF7CEF2AF8D04C0053852A /* demo.mp4 */,
-				8EDF7CFA2AF8EBF00053852A /* vap.mp4 */,
-				865853D7296C0E9800AAF955 /* sports-car.svga */,
 			);
 			path = virtual_gift_demo;
 			sourceTree = "<group>";
@@ -166,10 +160,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8EDF7CF22AF8E0A30053852A /* demo.mp4 in Resources */,
-				865853D8296C0E9800AAF955 /* sports-car.svga in Resources */,
 				865853CE296BFF9B00AAF955 /* LaunchScreen.storyboard in Resources */,
-				8EDF7CFB2AF8EBF00053852A /* vap.mp4 in Resources */,
 				865853CB296BFF9B00AAF955 /* Assets.xcassets in Resources */,
 				865853C9296BFF9900AAF955 /* Main.storyboard in Resources */,
 			);
@@ -224,6 +215,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E7DA07C2B4FD70D00C3BDDB /* Mp4PlayerManager.swift in Sources */,
 				865853C6296BFF9900AAF955 /* ViewController.swift in Sources */,
 				865853C2296BFF9900AAF955 /* AppDelegate.swift in Sources */,
 				865853D6296C020600AAF955 /* LiveAudioHeaderView.swift in Sources */,

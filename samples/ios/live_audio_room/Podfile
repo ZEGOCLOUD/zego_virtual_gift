@@ -8,7 +8,6 @@ target 'virtual_gift_demo' do
   # Pods for virtual_gift_demo
   pod 'ZegoUIKitPrebuiltLiveAudioRoom'
   pod 'ZegoUIKitSignalingPlugin'
-  pod 'QGVAPlayer'
 
 end
 

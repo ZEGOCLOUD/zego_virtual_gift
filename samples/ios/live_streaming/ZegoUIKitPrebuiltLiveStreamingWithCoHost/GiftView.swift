@@ -6,13 +6,16 @@
 //
 
 import UIKit
-import QGVAPlayer
 
 class GiftView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        Mp4PlayerManager.shared.delegate = self
+        Mp4PlayerManager.shared.createMediaPlayer()
+        Mp4PlayerManager.shared.setCanvas(self)
     }
+    
+    weak var container: UIView?
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -23,32 +26,17 @@ class GiftView: UIView {
     }
     
     func show(_ name: String, container: UIView?) {
-        container?.addSubview(self)
-        hwd_enterBackgroundOP = .pauseAndResume
-        let path = Bundle.main.path(forResource: name, ofType: nil)
-        setMute(true)
-        playHWDMP4(path, delegate: self)
+        self.container = container
+        Mp4PlayerManager.shared.loadResource("https://storage.zego.im/sdk-doc/Pics/zegocloud/gift/music_box.mp4")
+        Mp4PlayerManager.shared.start()
     }
 }
 
-extension GiftView: HWDMP4PlayDelegate {
-    func viewDidStartPlayMP4(_ container: UIView!) {
-        print("1. viewDidStartPlayMP4: \(container.description)")
+extension GiftView: Mp4PlayerDelegate {
+    func didStartPlayMp4() {
+        container?.addSubview(self)
     }
-    
-    func viewDidStopPlayMP4(_ lastFrameIndex: Int, view container: UIView!) {
-        print("2. viewDidStopPlayMP4, lastFrameIndex: \(lastFrameIndex), container: \(container.description)")
-    }
-    
-    func viewDidFinishPlayMP4(_ totalFrameCount: Int, view container: UIView!) {
-        print("3. viewDidFinishPlayMP4, totalFrameCount: \(totalFrameCount), container: \(container.description)")
-        DispatchQueue.main.async {
-            self.removeFromSuperview()
-        }
-    }
-    
-    func viewDidFailPlayMP4(_ error: Error!) {
-        print("4. viewDidFailPlayMP4, error: \(error.debugDescription)")
+    func didFinishPlayMp4() {
         DispatchQueue.main.async {
             self.removeFromSuperview()
         }
