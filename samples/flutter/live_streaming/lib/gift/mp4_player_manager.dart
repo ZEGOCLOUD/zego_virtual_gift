@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:zego_express_engine/zego_express_engine.dart';
 import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
@@ -9,7 +10,7 @@ class Mp4PlayerManager with ZegoUIKitMediaEventInterface {
     return _instance;
   }
 
-  Mp4PlayerManager._internal() {}
+  Mp4PlayerManager._internal();
 
   bool _registerToUIKit = false;
 
@@ -57,9 +58,6 @@ class Mp4PlayerManager with ZegoUIKitMediaEventInterface {
         _mediaPlayerViewID = viewID;
         _mediaPlayer?.setPlayerCanvas(ZegoCanvas(viewID, alphaBlend: true));
       });
-    } else {
-      _mediaPlayer
-          ?.setPlayerCanvas(ZegoCanvas(_mediaPlayerViewID, alphaBlend: true));
     }
     return _mediaPlayerWidget;
   }
@@ -87,6 +85,10 @@ class Mp4PlayerManager with ZegoUIKitMediaEventInterface {
       ZegoExpressEngine.instance.destroyCanvasView(_mediaPlayerViewID);
       _mediaPlayerViewID = -1;
     }
+  }
+
+  void clearView() {
+    _mediaPlayer?.clearView();
   }
 
   Future<int> loadResource(String url,

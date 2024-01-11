@@ -67,6 +67,7 @@ class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget>
             break;
           case ZegoMediaPlayerState.PlayEnded:
             Mp4PlayerManager().unregisterCallbacks();
+            Mp4PlayerManager().clearView();
             widget.onPlayEnd();
             break;
         }
@@ -77,7 +78,9 @@ class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget>
       },
     );
 
-    Mp4PlayerManager().createMediaPlayer().then((view) async {
+    Mp4PlayerManager()
+        .createMediaPlayer(reusePlayerView: true)
+        .then((view) async {
       _mediaPlayerWidget = view;
       var url = await ZegoGiftManager()
           .cache
