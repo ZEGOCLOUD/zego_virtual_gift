@@ -6,12 +6,12 @@ class Mp4PlayerManager with ZegoUIKitMediaEventInterface {
   static final Mp4PlayerManager _instance = Mp4PlayerManager._internal();
 
   factory Mp4PlayerManager() {
-    ZegoUIKit().registerMediaEvent(_instance);
-
     return _instance;
   }
 
-  Mp4PlayerManager._internal();
+  Mp4PlayerManager._internal() {}
+
+  bool _registerToUIKit = false;
 
   Widget? _mediaPlayerWidget;
   ZegoMediaPlayer? _mediaPlayer;
@@ -29,6 +29,11 @@ class Mp4PlayerManager with ZegoUIKitMediaEventInterface {
     Function(ZegoMediaPlayerFirstFrameEvent event)?
         onMediaPlayerFirstFrameEvent,
   }) {
+    if (!_registerToUIKit) {
+      ZegoUIKit().registerMediaEvent(_instance);
+      _registerToUIKit = true;
+    }
+
     _onMediaPlayerStateUpdate = onMediaPlayerStateUpdate;
     _onMediaPlayerFirstFrameEvent = onMediaPlayerFirstFrameEvent;
   }
