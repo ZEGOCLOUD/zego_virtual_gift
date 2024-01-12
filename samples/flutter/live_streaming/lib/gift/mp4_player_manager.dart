@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:zego_express_engine/zego_express_engine.dart';
-import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
+
+import 'package:zego_uikit/zego_uikit.dart';
 
 class Mp4PlayerManager with ZegoUIKitMediaEventInterface {
   static final Mp4PlayerManager _instance = Mp4PlayerManager._internal();

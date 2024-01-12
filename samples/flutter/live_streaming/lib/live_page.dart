@@ -1,35 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:live_streaming_cohost/gift/components/mp4_player_widget.dart';
-import 'package:live_streaming_cohost/gift/defines.dart';
-import 'package:live_streaming_cohost/gift/manager.dart';
-import 'package:live_streaming_cohost/gift/mp4_player_manager.dart';
 
 import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 import 'constants.dart';
-
-import 'gift/components/svga_player_widget.dart';
-import 'gift/data.dart';
-import 'gift/grid.dart';
+import 'gift/gift.dart';
 
 class LivePage extends StatefulWidget {
   final String liveID;
   final bool isHost;
-  final String localUserID;
 
   const LivePage({
     Key? key,
     required this.liveID,
-    required this.localUserID,
     this.isHost = false,
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => LivePageState();
+  State<LivePage> createState() => _LivePageState();
 }
 
-class LivePageState extends State<LivePage> {
+class _LivePageState extends State<LivePage> {
   ZegoUIKitPrebuiltLiveStreamingController? liveController;
 
   @override
@@ -45,8 +36,8 @@ class LivePageState extends State<LivePage> {
       ZegoGiftManager().service.init(
             appID: yourAppID,
             liveID: widget.liveID,
-            localUserID: widget.localUserID,
-            localUserName: 'user_${widget.localUserID}',
+            localUserID: localUserID,
+            localUserName: 'user_$localUserID',
           );
     });
   }

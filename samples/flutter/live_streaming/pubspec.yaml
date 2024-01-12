@@ -15,7 +15,7 @@ dependencies:
   zego_uikit_prebuilt_live_streaming: ^2.26.5
   zego_uikit_signaling_plugin: ^2.7.3
   zego_uikit: ^2.17.1
-  zego_express_engine: 3.11.0
+  zego_express_engine: any
 
   cupertino_icons: ^1.0.2
 

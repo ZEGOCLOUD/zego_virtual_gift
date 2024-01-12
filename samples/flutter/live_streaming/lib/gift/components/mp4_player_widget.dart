@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:live_streaming_cohost/gift/defines.dart';
-import 'package:live_streaming_cohost/gift/manager.dart';
-import 'package:live_streaming_cohost/gift/mp4_player_manager.dart';
 import 'package:zego_express_engine/zego_express_engine.dart';
+
+import '../defines.dart';
+import '../manager.dart';
+import '../mp4_player_manager.dart';
 
 class ZegoMp4PlayerWidget extends StatefulWidget {
   const ZegoMp4PlayerWidget(

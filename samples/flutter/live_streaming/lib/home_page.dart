@@ -3,23 +3,24 @@ import 'dart:math';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:live_streaming_cohost/constants.dart';
 
-// Project imports:
-import 'package:live_streaming_cohost/live_page.dart';
 import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 
+// Project imports:
+import 'constants.dart';
+import 'live_page.dart';
+
 class HomePage extends StatelessWidget {
+  HomePage({Key? key}) : super(key: key);
+
   /// Users who use the same liveID can join the same live streaming.
   final liveTextCtrl =
       TextEditingController(text: Random().nextInt(10000).toString());
 
-  HomePage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final buttonStyle = ElevatedButton.styleFrom(
-      fixedSize: const Size(180, 60),
+      fixedSize: const Size(200, 60),
     );
 
     return Scaffold(
@@ -87,7 +88,6 @@ class HomePage extends StatelessWidget {
         builder: (context) => LivePage(
           liveID: liveID,
           isHost: isHost,
-          localUserID: localUserID,
         ),
       ),
     );
