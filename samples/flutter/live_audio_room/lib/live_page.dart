@@ -69,6 +69,7 @@ class _LivePageState extends State<LivePage> {
           ..background = Container(
             color: Colors.black.withOpacity(0.5),
           )
+          ..mediaPlayerConfig.supportTransparent = true
           ..foreground = giftForeground(),
       ),
     );

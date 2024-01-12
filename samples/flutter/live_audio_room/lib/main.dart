@@ -8,6 +8,8 @@ import 'home_page.dart';
 import 'gift/gift.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   ZegoGiftManager().cache.cache(giftItemList);
 
   ZegoUIKit().initLog().then((value) {

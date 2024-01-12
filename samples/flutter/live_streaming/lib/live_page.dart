@@ -73,6 +73,7 @@ class _LivePageState extends State<LivePage> {
         controller: liveController,
         config: (widget.isHost ? hostConfig : audienceConfig)
           ..foreground = giftForeground()
+          ..mediaPlayerConfig.supportTransparent = true
           ..onLiveStreamingStateUpdate = (state) {
             if (ZegoLiveStreamingState.idle == state) {
               ZegoGiftManager().playList.clear();
