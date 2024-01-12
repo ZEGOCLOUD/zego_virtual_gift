@@ -16,8 +16,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var buttonStyle = ElevatedButton.styleFrom(
-      fixedSize: const Size(120, 60),
+    final buttonStyle = ElevatedButton.styleFrom(
+      fixedSize: const Size(200, 60),
     );
 
     return Scaffold(

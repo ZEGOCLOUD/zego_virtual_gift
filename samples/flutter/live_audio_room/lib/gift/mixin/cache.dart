@@ -73,4 +73,24 @@ class CacheImpl {
     Uint8List data = assetData.buffer.asUint8List();
     return data;
   }
+
+  void cacheAllFiles(List<ZegoGiftItem> cacheList) {
+    for (var itemData in cacheList) {
+      debugPrint('${DateTime.now()} try cache ${itemData.sourceURL}');
+      if (itemData.source != ZegoGiftSource.url) {
+        continue;
+      }
+      cacheFile(itemData.sourceURL);
+    }
+  }
+
+  void cacheFile(String url) {
+    DefaultCacheManager().getSingleFile(url);
+  }
+
+  Future<String?> getFilePathFromCache(String url) async {
+    final FileInfo? fileInfo =
+        await DefaultCacheManager().getFileFromCache(url);
+    return fileInfo?.file.path;
+  }
 }

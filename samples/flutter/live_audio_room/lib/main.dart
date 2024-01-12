@@ -1,18 +1,18 @@
-// Dart imports:
-import 'dart:async';
-import 'dart:math';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:svgaplayer_flutter/parser.dart';
-import 'package:svgaplayer_flutter/player.dart';
-import 'package:svgaplayer_flutter/proto/svga.pb.dart';
+
+import 'package:zego_uikit/zego_uikit.dart';
 
 // Package imports:
 import 'home_page.dart';
+import 'gift/gift.dart';
 
 void main() {
-  runApp(const MyApp());
+  ZegoGiftManager().cache.cache(giftItemList);
+
+  ZegoUIKit().initLog().then((value) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {

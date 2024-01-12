@@ -12,7 +12,7 @@ class ServiceImpl {
   String _localUserID = '';
   String _localUserName = '';
 
-  List<StreamSubscription<dynamic>?> _subscriptions = [];
+  final List<StreamSubscription<dynamic>?> _subscriptions = [];
 
   final recvNotifier = ValueNotifier<ZegoGiftProtocolItem?>(null);
 
