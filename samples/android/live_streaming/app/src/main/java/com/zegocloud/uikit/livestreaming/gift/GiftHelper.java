@@ -10,15 +10,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import com.zegocloud.uikit.ZegoUIKit;
 import com.zegocloud.uikit.livestreaming.R;
-import com.zegocloud.uikit.plugin.adapter.plugins.signaling.ZegoSignalingInRoomTextMessage;
-import com.zegocloud.uikit.service.defines.ZegoInRoomCommandListener;
-import com.zegocloud.uikit.service.defines.ZegoUIKitUser;
+import com.zegocloud.uikit.plugin.adapter.plugins.signaling.SendRoomMessageCallback;
+import com.zegocloud.uikit.plugin.adapter.plugins.signaling.ZegoSignalingInRoomCommandMessage;
+import com.zegocloud.uikit.service.defines.ZegoUIKitSignalingPluginInRoomCommandMessageListener;
 import com.zegocloud.uikit.utils.Utils;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,29 +31,26 @@ public class GiftHelper {
     private String userName;
 
     public GiftHelper(ViewGroup animationViewParent, String userID, String userName) {
-        giftAnimation = new VAPAnimation(animationViewParent);
+        giftAnimation = new ZegoAnimation(animationViewParent);
         this.userID = userID;
         this.userName = userName;
 
-        // when someone send gift,will receive InRoomCommand or InRoomTextMessage
-        ZegoUIKit.addInRoomCommandListener(new ZegoInRoomCommandListener() {
-            @Override
-            public void onInRoomCommandReceived(ZegoUIKitUser fromUser, String command) {
-                if (!fromUser.userID.equals(userID) && command.contains("gift_type")) {
-                    showAnimation();
-                }
-            }
-        });
+        // when someone send gift in room,everyone will receive InRoomCommand
+        ZegoUIKit.getSignalingPlugin().addInRoomCommandMessageListener(new ZegoUIKitSignalingPluginInRoomCommandMessageListener() {
+                @Override
+                public void onInRoomCommandMessageReceived(List<ZegoSignalingInRoomCommandMessage> messages,
+                    String roomID) {
+                    for (ZegoSignalingInRoomCommandMessage message : messages) {
+                        Log.d("TAG",
+                            "onInRoomCommandMessageReceived() called with: message = [" + message + "], roomID = ["
+                                + roomID + "]");
+                        if (!message.senderUserID.equals(userID) && message.text.contains("gift_type")) {
+                            showAnimation();
+                        }
+                    }
 
-        // when someone send gift,will receive InRoomCommand or InRoomTextMessage
-        ZegoUIKit.getSignalingPlugin().addInRoomTextMessageListener((messages, s) -> {
-            if (!messages.isEmpty()) {
-                ZegoSignalingInRoomTextMessage message = messages.get(0);
-                if (!message.senderUserID.equals(userID)) {
-                    showAnimation();
                 }
-            }
-        });
+            });
     }
 
     public View getGiftButton(Context context, long appID, String serverSecret, String roomID) {
@@ -69,11 +67,14 @@ public class GiftHelper {
         imageView.setLayoutParams(layoutParams);
         // click will post json to server
         imageView.setOnClickListener(v -> {
+
+            //
+            //
             final String path = "https://zego-example-server-nextjs.vercel.app/api/send_gift";
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("app_id", appID);
-                jsonObject.put("server_secret", serverSecret);
+//                jsonObject.put("app_id", appID);
+//                jsonObject.put("server_secret", serverSecret);
                 jsonObject.put("room_id", roomID);
                 jsonObject.put("user_id", userID);
                 jsonObject.put("user_name", userName);
@@ -83,12 +84,19 @@ public class GiftHelper {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            String jsonString = jsonObject.toString();
-            new Thread() {
-                public void run() {
-                    httpPost(path, jsonString, () -> showAnimation());
-                }
-            }.start();
+//            String jsonString = jsonObject.toString();
+//            new Thread() {
+//                public void run() {
+//                    httpPost(path, jsonString, () -> showAnimation());
+//                }
+//            }.start();
+            ZegoUIKit.getSignalingPlugin().sendInRoomCommandMessage(jsonObject.toString(), roomID,
+                new SendRoomMessageCallback() {
+                    @Override
+                    public void onResult(int errorCode, String errorMessage) {
+                        showAnimation();
+                    }
+                });
         });
         return imageView;
     }
@@ -117,7 +125,6 @@ public class GiftHelper {
             outwritestream.flush();
             outwritestream.close();
             int code = conn.getResponseCode();
-            Log.d(ZegoUIKit.TAG, "run: " + code);
             if (code == 200) {
                 InputStream is = conn.getInputStream();
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -128,7 +135,6 @@ public class GiftHelper {
                 }
                 is.close();
                 String content = baos.toString();
-                Log.d(ZegoUIKit.TAG, "run() called:" + content);
                 handler.post(successCallback);
             } else {
             }

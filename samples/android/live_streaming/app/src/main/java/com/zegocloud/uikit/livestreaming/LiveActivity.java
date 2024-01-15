@@ -2,14 +2,12 @@ package com.zegocloud.uikit.livestreaming;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import androidx.appcompat.app.AppCompatActivity;
 import com.zegocloud.uikit.livestreaming.gift.GiftHelper;
 import com.zegocloud.uikit.prebuilt.livestreaming.ZegoUIKitPrebuiltLiveStreamingConfig;
 import com.zegocloud.uikit.prebuilt.livestreaming.ZegoUIKitPrebuiltLiveStreamingFragment;
 import com.zegocloud.uikit.prebuilt.livestreaming.core.ZegoLiveStreamingRole;
 import java.util.Collections;
-import java.util.List;
 
 public class LiveActivity extends AppCompatActivity {
 
@@ -36,7 +34,6 @@ public class LiveActivity extends AppCompatActivity {
             config = ZegoUIKitPrebuiltLiveStreamingConfig.host(true);
         } else {
             config = ZegoUIKitPrebuiltLiveStreamingConfig.audience(true);
-            ;
         }
 
         ZegoUIKitPrebuiltLiveStreamingFragment fragment = ZegoUIKitPrebuiltLiveStreamingFragment.newInstance(appID,
