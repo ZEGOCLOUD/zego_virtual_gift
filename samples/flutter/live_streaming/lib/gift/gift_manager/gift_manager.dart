@@ -1,29 +1,23 @@
-import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
-import 'package:http/http.dart' as http;
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:http/http.dart' as http;
 import 'package:transparent_image/transparent_image.dart';
 import 'package:zego_uikit/zego_uikit.dart';
 
+import '../components/mp4_player.dart';
 import 'defines.dart';
 
-part 'mixin/play_list.dart';
+part 'gift_cache.dart';
+part 'gift_protocol.dart';
+part 'gift_play_list.dart';
 
-part 'mixin/service.dart';
-
-part 'mixin/cache.dart';
-
-class ZegoGiftManager with Cache, PlayList, Service {
+class ZegoGiftManager with GiftCache, GiftPlayList, GiftProtocol {
   static final ZegoGiftManager _singleton = ZegoGiftManager._internal();
-
-  factory ZegoGiftManager() {
-    return _singleton;
-  }
-
+  factory ZegoGiftManager() => _singleton;
   ZegoGiftManager._internal();
 }

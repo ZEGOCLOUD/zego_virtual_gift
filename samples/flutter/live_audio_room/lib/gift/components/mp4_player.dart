@@ -1,18 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:zego_express_engine/zego_express_engine.dart';
-
 import 'package:zego_uikit/zego_uikit.dart';
 
-class Mp4PlayerManager with ZegoUIKitMediaEventInterface {
-  static final Mp4PlayerManager _instance = Mp4PlayerManager._internal();
-
-  factory Mp4PlayerManager() {
-    return _instance;
-  }
-
-  Mp4PlayerManager._internal();
+class GiftMp4Player with ZegoUIKitMediaEventInterface {
+  static final GiftMp4Player _instance = GiftMp4Player._internal();
+  factory GiftMp4Player() => _instance;
+  GiftMp4Player._internal();
 
   bool _registerToUIKit = false;
 
@@ -21,16 +15,12 @@ class Mp4PlayerManager with ZegoUIKitMediaEventInterface {
   int _mediaPlayerViewID = -1;
 
   /// callbacks
-  void Function(ZegoMediaPlayerState state, int errorCode)?
-      _onMediaPlayerStateUpdate;
-  void Function(ZegoMediaPlayerFirstFrameEvent event)?
-      _onMediaPlayerFirstFrameEvent;
+  void Function(ZegoMediaPlayerState state, int errorCode)? _onMediaPlayerStateUpdate;
+  void Function(ZegoMediaPlayerFirstFrameEvent event)? _onMediaPlayerFirstFrameEvent;
 
   void registerCallbacks({
-    Function(ZegoMediaPlayerState state, int errorCode)?
-        onMediaPlayerStateUpdate,
-    Function(ZegoMediaPlayerFirstFrameEvent event)?
-        onMediaPlayerFirstFrameEvent,
+    Function(ZegoMediaPlayerState state, int errorCode)? onMediaPlayerStateUpdate,
+    Function(ZegoMediaPlayerFirstFrameEvent event)? onMediaPlayerFirstFrameEvent,
   }) {
     if (!_registerToUIKit) {
       ZegoUIKit().registerMediaEvent(_instance);
@@ -47,16 +37,12 @@ class Mp4PlayerManager with ZegoUIKitMediaEventInterface {
   }
 
   /// create media player
-  Future<Widget?> createMediaPlayer({bool reusePlayerView = false}) async {
+  Future<Widget?> createMediaPlayer() async {
     _mediaPlayer ??= await ZegoExpressEngine.instance.createMediaPlayer();
 
-    if (!reusePlayerView) {
-      destroyPlayerView();
-    }
-    // create or reuse old widget
+    // create widget
     if (_mediaPlayerViewID == -1) {
-      _mediaPlayerWidget =
-          await ZegoExpressEngine.instance.createCanvasView((viewID) {
+      _mediaPlayerWidget = await ZegoExpressEngine.instance.createCanvasView((viewID) {
         _mediaPlayerViewID = viewID;
         _mediaPlayer?.setPlayerCanvas(ZegoCanvas(viewID, alphaBlend: true));
       });
@@ -93,8 +79,7 @@ class Mp4PlayerManager with ZegoUIKitMediaEventInterface {
     _mediaPlayer?.clearView();
   }
 
-  Future<int> loadResource(String url,
-      {ZegoAlphaLayoutType layoutType = ZegoAlphaLayoutType.Left}) async {
+  Future<int> loadResource(String url, {ZegoAlphaLayoutType layoutType = ZegoAlphaLayoutType.Left}) async {
     debugPrint('Mp4 Player loadResource: $url');
     int ret = -1;
     if (_mediaPlayer != null) {

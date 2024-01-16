@@ -26,16 +26,17 @@ public class ZegoAnimation implements GiftAnimation {
     public ZegoAnimation(ViewGroup parent) {
         this.parentView = parent;
 
-        //用于播放的 view
+        // 'view' for play animation
         mediaPlayerView = new SurfaceView(parent.getContext());
         mediaPlayerView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        mediaPlayerView.setZOrderOnTop(true);//把 SurfaceView 置于显示窗口的最顶层
+        mediaPlayerView.setZOrderOnTop(true); // Place the SurfaceView at the top layer of the display window.
 
         mediaPlayer = ZegoExpressEngine.getEngine().createMediaPlayer();
         ZegoCanvas canvas = new ZegoCanvas(mediaPlayerView);
-        canvas.alphaBlend = true;//支持 Alpha 通道渲染
+        canvas.alphaBlend = true; // Support for Alpha channel rendering.
         mediaPlayer.setPlayerCanvas(canvas);
 
+        // demo gift resource
         loadResourceFile("https://storage.zego.im/sdk-doc/Pics/zegocloud/gift/music_box.mp4");
 
         mediaPlayer.setEventHandler(new IZegoMediaPlayerEventHandler() {
@@ -65,21 +66,21 @@ public class ZegoAnimation implements GiftAnimation {
 
     private void loadResourceFile(String url) {
         ZegoMediaPlayerResource resource = new ZegoMediaPlayerResource();
-        resource.loadType = ZegoMultimediaLoadType.FILE_PATH; // 加载方式选择文件路径加载
+        resource.loadType = ZegoMultimediaLoadType.FILE_PATH; // Choose file path for loading
         if (cachedResourceMap.containsKey(url)) {
-            resource.filePath = cachedResourceMap.get(url);//文件路径
+            resource.filePath = cachedResourceMap.get(url);//file path
         } else {
             resource.filePath = url;
         }
-        resource.alphaLayout = ZegoAlphaLayoutType.LEFT; // 根据实际资源选择 Alpha 通道布局
+        resource.alphaLayout = ZegoAlphaLayoutType.LEFT; // Choose Alpha channel layout based on available resources
         mediaPlayer.loadResourceWithConfig(resource, new IZegoMediaPlayerLoadResourceCallback() {
             @Override
             public void onLoadResourceCallback(int errorCode) {
-                //资源加载结果
-                // 可执行更新 UI 等逻辑
+                // Resource loading result
+                // Can execute logic such as updating UI
                 if (errorCode == 0) {
-                    //加载文件成功，此时可以开始播放媒体资源
-                    //                    mediaPlayer.start();
+                    // The file is loaded successfully, and now you can start playing the media resource by startPlay().
+                    // 
                 }
             }
         });

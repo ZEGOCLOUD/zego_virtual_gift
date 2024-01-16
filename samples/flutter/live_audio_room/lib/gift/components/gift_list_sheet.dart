@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'data.dart';
-import 'defines.dart';
-import 'manager.dart';
+import '../gift_data.dart';
+import '../gift_manager/defines.dart';
+import '../gift_manager/gift_manager.dart';
 
-void showSoundEffectSheet(
-  BuildContext context,
-) {
+void showGiftListSheet(BuildContext context) {
   showModalBottomSheet(
     backgroundColor: Colors.black.withOpacity(0.8),
     context: context,
@@ -103,16 +101,10 @@ class _ZegoGiftSheetState extends State<ZegoGiftSheet> {
         Navigator.of(context).pop();
 
         /// local play
-        ZegoGiftManager().playList.add(PlayData(
-              giftItem: giftItem,
-              count: giftCount,
-            ));
+        ZegoGiftManager().playList.add(PlayData(giftItem: giftItem, count: giftCount));
 
         /// notify remote host
-        ZegoGiftManager().service.sendGift(
-              name: giftItem.name,
-              count: giftCount,
-            );
+        ZegoGiftManager().service.sendGift(name: giftItem.name, count: giftCount);
       },
       child: const Text('SEND'),
     );
@@ -155,9 +147,7 @@ class _ZegoGiftSheetState extends State<ZegoGiftSheet> {
       children: widget.itemDataList
           .map((item) {
             return GestureDetector(
-              onTap: () {
-                selectedGiftItemNotifier.value = item;
-              },
+              onTap: () => selectedGiftItemNotifier.value = item,
               child: Column(
                 children: [
                   ValueListenableBuilder<ZegoGiftItem?>(
@@ -165,13 +155,9 @@ class _ZegoGiftSheetState extends State<ZegoGiftSheet> {
                       builder: (context, selectedGiftItem, _) {
                         return Container(
                           decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(2),
-                            ),
+                            borderRadius: const BorderRadius.all(Radius.circular(2)),
                             border: Border.all(
-                              color: selectedGiftItem?.name == item.name
-                                  ? Colors.red
-                                  : Colors.white.withOpacity(0.2),
+                              color: selectedGiftItem?.name == item.name ? Colors.red : Colors.white.withOpacity(0.2),
                             ),
                           ),
                           width: 50,
@@ -179,31 +165,18 @@ class _ZegoGiftSheetState extends State<ZegoGiftSheet> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(3),
                             child: item.icon.isEmpty
-                                ? const Icon(
-                                    Icons.card_giftcard,
-                                    color: Colors.red,
-                                  )
+                                ? const Icon(Icons.card_giftcard, color: Colors.red)
                                 : Image.asset(item.icon),
                           ),
                         );
                       }),
-                  Text(
-                    item.name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                  Text(item.name, style: const TextStyle(color: Colors.white)),
                   Row(
                     children: [
-                      const Icon(
-                        Icons.attach_money,
-                        color: Colors.yellow,
-                      ),
+                      const Icon(Icons.attach_money, color: Colors.yellow),
                       Text(
                         item.weight.toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ],
                   )
@@ -211,12 +184,7 @@ class _ZegoGiftSheetState extends State<ZegoGiftSheet> {
               ),
             );
           })
-          .map((item) => Row(
-                children: [
-                  item,
-                  Container(width: 20),
-                ],
-              ))
+          .map((item) => Row(children: [item, Container(width: 20)]))
           .toList(),
     );
   }

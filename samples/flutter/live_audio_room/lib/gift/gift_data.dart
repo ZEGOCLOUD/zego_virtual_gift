@@ -1,4 +1,4 @@
-import 'defines.dart';
+import 'gift_manager/defines.dart';
 
 final List<ZegoGiftItem> giftItemList = [
   ZegoGiftItem(

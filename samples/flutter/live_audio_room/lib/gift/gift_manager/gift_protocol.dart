@@ -1,36 +1,27 @@
-part of '../manager.dart';
+part of 'gift_manager.dart';
 
-mixin Service {
-  final _serviceImpl = ServiceImpl();
-
-  ServiceImpl get service => _serviceImpl;
+mixin GiftProtocol {
+  final _giftProtocolImpll = GiftProtocolImpll();
+  GiftProtocolImpll get service => _giftProtocolImpll;
 }
 
-class ServiceImpl {
-  int _appID = 0;
-  String _liveID = '';
-  String _localUserID = '';
-  String _localUserName = '';
+class GiftProtocolImpll {
+  late int _appID;
+  late String _liveID;
+  late String _localUserID;
+  late String _localUserName;
 
   final List<StreamSubscription<dynamic>?> _subscriptions = [];
 
   final recvNotifier = ValueNotifier<ZegoGiftProtocolItem?>(null);
 
-  void init({
-    required int appID,
-    required String liveID,
-    required String localUserID,
-    required String localUserName,
-  }) {
+  void init({required int appID, required String liveID, required String localUserID, required String localUserName}) {
     _appID = appID;
     _liveID = liveID;
     _localUserID = localUserID;
     _localUserName = localUserName;
 
-    _subscriptions.add(ZegoUIKit()
-        .getSignalingPlugin()
-        .getInRoomCommandMessageReceivedEventStream()
-        .listen((event) {
+    _subscriptions.add(ZegoUIKit().getSignalingPlugin().getInRoomCommandMessageReceivedEventStream().listen((event) {
       onInRoomCommandMessageReceived(event);
     }));
   }
@@ -39,6 +30,7 @@ class ServiceImpl {
     for (final subscription in _subscriptions) {
       subscription?.cancel();
     }
+    GiftMp4Player().destroyMediaPlayer();
   }
 
   Future<bool> sendGift({
@@ -56,19 +48,17 @@ class ServiceImpl {
       ),
     ).toJson();
 
-    /// This is just a demo for synchronous display effects.
-    ///
-    /// If it involves billing or your business logic,
-    /// please use the SERVER API to send a Message of type ZIMCommandMessage.
-    ///
-    /// https://docs.zegocloud.com/article/16201
+    ///! This is just a demo for synchronous display effects.
+    ///!
+    ///! If it involves billing or your business logic,
+    ///! please use the SERVER API to send a Message of type ZIMCommandMessage.
+    ///!
+    ///! https://docs.zegocloud.com/article/16201
     debugPrint('! ${'*' * 80}');
-    debugPrint(
-        '! ** Warning: This is just a demo for synchronous display effects.');
+    debugPrint('! ** Warning: This is just a demo for synchronous display effects.');
     debugPrint('! ** ');
     debugPrint('! ** If it involves billing or your business logic,');
-    debugPrint(
-        '! ** please use the SERVER API to send a Message of type ZIMCommandMessage.');
+    debugPrint('! ** please use the SERVER API to send a Message of type ZIMCommandMessage.');
     debugPrint('! ${'*' * 80}');
 
     debugPrint('try send gift, name:$name, count:$count, data:$data');
@@ -92,8 +82,7 @@ class ServiceImpl {
   }
 
   // if you use unreliable message channel, you need subscription this method.
-  void onInRoomCommandMessageReceived(
-      ZegoSignalingPluginInRoomCommandMessageReceivedEvent event) {
+  void onInRoomCommandMessageReceived(ZegoSignalingPluginInRoomCommandMessageReceivedEvent event) {
     final messages = event.messages;
 
     // You can display different animations according to gift-type
@@ -113,11 +102,7 @@ class ZegoGiftProtocolItem {
   String name = '';
   int count = 0;
 
-  ZegoGiftProtocolItem({
-    required this.name,
-    required this.count,
-  });
-
+  ZegoGiftProtocolItem({required this.name, required this.count});
   ZegoGiftProtocolItem.empty();
 }
 

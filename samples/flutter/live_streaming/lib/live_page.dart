@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:zego_uikit_prebuilt_live_streaming/zego_uikit_prebuilt_live_streaming.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
@@ -32,7 +31,6 @@ class _LivePageState extends State<LivePage> {
     ZegoGiftManager().service.recvNotifier.addListener(onGiftReceived);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      //  todo
       ZegoGiftManager().service.init(
             appID: yourAppID,
             liveID: widget.liveID,
@@ -48,7 +46,6 @@ class _LivePageState extends State<LivePage> {
 
     ZegoGiftManager().service.recvNotifier.removeListener(onGiftReceived);
     ZegoGiftManager().service.uninit();
-    Mp4PlayerManager().destroyMediaPlayer();
   }
 
   @override
@@ -215,15 +212,14 @@ class _LivePageState extends State<LivePage> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(shape: const CircleBorder()),
           onPressed: () {
-            showSoundEffectSheet(context);
+            showGiftListSheet(context);
           },
           child: const Icon(Icons.blender),
         ),
       );
 
   void onGiftReceived() {
-    final receivedGift = ZegoGiftManager().service.recvNotifier.value ??
-        ZegoGiftProtocolItem.empty();
+    final receivedGift = ZegoGiftManager().service.recvNotifier.value ?? ZegoGiftProtocolItem.empty();
     final giftData = queryGiftInItemList(receivedGift.name);
     if (null == giftData) {
       debugPrint('not ${receivedGift.name} exist');

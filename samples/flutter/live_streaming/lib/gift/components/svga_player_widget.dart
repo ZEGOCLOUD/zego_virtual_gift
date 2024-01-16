@@ -4,8 +4,8 @@ import 'package:svgaplayer_flutter/parser.dart';
 import 'package:svgaplayer_flutter/player.dart';
 import 'package:svgaplayer_flutter/proto/svga.pb.dart';
 
-import '../defines.dart';
-import '../manager.dart';
+import '../gift_manager/defines.dart';
+import '../gift_manager/gift_manager.dart';
 
 class ZegoSvgaPlayerWidget extends StatefulWidget {
   const ZegoSvgaPlayerWidget({

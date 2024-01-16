@@ -67,36 +67,42 @@ public class GiftHelper {
         imageView.setLayoutParams(layoutParams);
         // click will post json to server
         imageView.setOnClickListener(v -> {
+            // !In the demo, gifts are sent directly by sending commands. However, 
+            // !when you integrate, you need to forward the commands through your business server 
+            // !in order to handle settlement-related logic.
+            // !like this:
+            // final String path = "https://zego-example-server-nextjs.vercel.app/api/send_gift";
+            // JSONObject jsonObject = new JSONObject();
+            // try {
+            //     jsonObject.put("app_id", appID);
+            //     jsonObject.put("server_secret", serverSecret);
+            //     jsonObject.put("room_id", roomID);
+            //     jsonObject.put("user_id", userID);
+            //     jsonObject.put("user_name", userName);
+            //     jsonObject.put("gift_type", 1001);
+            //     jsonObject.put("gift_count", 1);
+            //     jsonObject.put("timestamp", System.currentTimeMillis());
+            // } catch (JSONException e) {
+            //     e.printStackTrace();
+            // }
+            // String jsonString = jsonObject.toString();
+            // new Thread() {
+            //     public void run() {
+            //         httpPost(path, jsonString, () -> showAnimation());
+            //     }
+            // }.start();
 
-            //
-            //
-            final String path = "https://zego-example-server-nextjs.vercel.app/api/send_gift";
-            JSONObject jsonObject = new JSONObject();
-            try {
-//                jsonObject.put("app_id", appID);
-//                jsonObject.put("server_secret", serverSecret);
-                jsonObject.put("room_id", roomID);
-                jsonObject.put("user_id", userID);
-                jsonObject.put("user_name", userName);
-                jsonObject.put("gift_type", 1001);
-                jsonObject.put("gift_count", 1);
-                jsonObject.put("timestamp", System.currentTimeMillis());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-//            String jsonString = jsonObject.toString();
-//            new Thread() {
-//                public void run() {
-//                    httpPost(path, jsonString, () -> showAnimation());
-//                }
-//            }.start();
+            // !In the demo, gifts are sent directly by sending commands. However, 
+            // !when you integrate, you need to forward the commands through your business server 
+            // !in order to handle settlement-related logic.
             ZegoUIKit.getSignalingPlugin().sendInRoomCommandMessage(jsonObject.toString(), roomID,
                 new SendRoomMessageCallback() {
                     @Override
                     public void onResult(int errorCode, String errorMessage) {
                         showAnimation();
                     }
-                });
+                }
+            );
         });
         return imageView;
     }

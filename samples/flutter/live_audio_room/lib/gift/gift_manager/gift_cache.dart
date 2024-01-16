@@ -1,6 +1,6 @@
-part of '../manager.dart';
+part of 'gift_manager.dart';
 
-mixin Cache {
+mixin GiftCache {
   final _cacheImpl = CacheImpl();
 
   CacheImpl get cache => _cacheImpl;

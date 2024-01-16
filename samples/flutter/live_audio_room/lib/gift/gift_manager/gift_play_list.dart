@@ -1,6 +1,6 @@
-part of '../manager.dart';
+part of 'gift_manager.dart';
 
-mixin PlayList {
+mixin GiftPlayList {
   final _playListImpl = PlayListImpl();
 
   PlayListImpl get playList => _playListImpl;

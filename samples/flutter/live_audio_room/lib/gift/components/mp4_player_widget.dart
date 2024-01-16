@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:zego_express_engine/zego_express_engine.dart';
 
-import '../defines.dart';
-import '../manager.dart';
-import '../mp4_player_manager.dart';
+import '../gift_manager/defines.dart';
+import '../gift_manager/gift_manager.dart';
+import 'mp4_player.dart';
 
 class ZegoMp4PlayerWidget extends StatefulWidget {
-  const ZegoMp4PlayerWidget(
-      {Key? key,
-      required this.onPlayEnd,
-      required this.playData,
-      this.size,
-      this.textStyle})
+  const ZegoMp4PlayerWidget({Key? key, required this.onPlayEnd, required this.playData, this.size, this.textStyle})
       : super(key: key);
 
   final VoidCallback onPlayEnd;
@@ -27,31 +22,23 @@ class ZegoMp4PlayerWidget extends StatefulWidget {
   State<ZegoMp4PlayerWidget> createState() => ZegoMp4PlayerWidgetState();
 }
 
-class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget>
-    with SingleTickerProviderStateMixin {
+class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget> with SingleTickerProviderStateMixin {
   Widget? _mediaPlayerWidget;
 
   double get fontSize => 15;
 
   Size get displaySize => null != widget.size
-      ? Size(
-          (widget.size!.width) -
-              widget.playData.count.toString().length * fontSize,
-          widget.size!.height,
-        )
+      ? Size((widget.size!.width) - widget.playData.count.toString().length * fontSize, widget.size!.height)
       : MediaQuery.of(context).size;
 
-  Size get countSize => Size(
-        (widget.playData.count.toString().length + 2) * fontSize * 1.2,
-        fontSize + 2,
-      );
+  Size get countSize => Size((widget.playData.count.toString().length + 2) * fontSize * 1.2, fontSize + 2);
 
   @override
   void initState() {
     super.initState();
 
     debugPrint('load ${widget.playData} begin:${DateTime.now().toString()}');
-    Mp4PlayerManager().registerCallbacks(
+    GiftMp4Player().registerCallbacks(
       onMediaPlayerStateUpdate: (state, errorCode) {
         if (!context.mounted) {
           return;
@@ -67,8 +54,8 @@ class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget>
           case ZegoMediaPlayerState.Pausing:
             break;
           case ZegoMediaPlayerState.PlayEnded:
-            Mp4PlayerManager().unregisterCallbacks();
-            Mp4PlayerManager().clearView();
+            GiftMp4Player().unregisterCallbacks();
+            GiftMp4Player().clearView();
             widget.onPlayEnd();
             break;
         }
@@ -79,18 +66,12 @@ class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget>
       },
     );
 
-    Mp4PlayerManager()
-        .createMediaPlayer(reusePlayerView: true)
-        .then((view) async {
+    GiftMp4Player().createMediaPlayer().then((view) async {
       _mediaPlayerWidget = view;
-      var url = await ZegoGiftManager()
-          .cache
-          .getFilePathFromCache(widget.playData.giftItem.sourceURL);
+      var url = await ZegoGiftManager().cache.getFilePathFromCache(widget.playData.giftItem.sourceURL);
       url ??= widget.playData.giftItem.sourceURL;
-      Mp4PlayerManager()
-          .loadResource(url, layoutType: ZegoAlphaLayoutType.Left)
-          .then((value) {
-        Mp4PlayerManager().startMediaPlayer();
+      GiftMp4Player().loadResource(url, layoutType: ZegoAlphaLayoutType.Left).then((value) {
+        GiftMp4Player().startMediaPlayer();
       });
     });
   }
@@ -102,42 +83,22 @@ class ZegoMp4PlayerWidgetState extends State<ZegoMp4PlayerWidget>
             size: countSize,
             child: Text(
               'x ${widget.playData.count}',
-              style: widget.textStyle ??
-                  TextStyle(
-                    fontSize: fontSize,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+              style:
+                  widget.textStyle ?? TextStyle(fontSize: fontSize, color: Colors.white, fontWeight: FontWeight.bold),
             ),
           )
         : const SizedBox.shrink();
 
     if (displaySize.width < MediaQuery.of(context).size.width) {
       /// width < 1/2
-      return Row(
-        children: [
-          SizedBox.fromSize(
-            size: displaySize,
-            child: _mediaPlayerWidget,
-          ),
-          countWidget,
-        ],
-      );
+      return Row(children: [SizedBox.fromSize(size: displaySize, child: _mediaPlayerWidget), countWidget]);
     }
 
     return SizedBox.fromSize(
       size: displaySize,
       child: Stack(children: [
-        Center(
-          child: SizedBox.fromSize(
-            size: displaySize,
-            child: _mediaPlayerWidget,
-          ),
-        ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: countWidget,
-        ),
+        Center(child: SizedBox.fromSize(size: displaySize, child: _mediaPlayerWidget)),
+        Align(alignment: Alignment.centerRight, child: countWidget),
       ]),
     );
   }
