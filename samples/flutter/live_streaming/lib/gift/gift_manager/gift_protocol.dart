@@ -81,7 +81,6 @@ class GiftProtocolImpll {
     return uint8List;
   }
 
-  // if you use unreliable message channel, you need subscription this method.
   void onInRoomCommandMessageReceived(ZegoSignalingPluginInRoomCommandMessageReceivedEvent event) {
     final messages = event.messages;
 
