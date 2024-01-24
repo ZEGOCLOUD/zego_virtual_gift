@@ -20,8 +20,6 @@ class LivePage extends StatefulWidget {
 }
 
 class _LivePageState extends State<LivePage> {
-  ZegoUIKitPrebuiltLiveStreamingController? liveController;
-
   @override
   void initState() {
     super.initState();
@@ -57,8 +55,8 @@ class _LivePageState extends State<LivePage> {
     final audienceConfig = ZegoUIKitPrebuiltLiveStreamingConfig.audience(
       plugins: [ZegoUIKitSignalingPlugin()],
     )
-      ..bottomMenuBarConfig.coHostExtendButtons = [giftButton]
-      ..bottomMenuBarConfig.audienceExtendButtons = [giftButton];
+      ..bottomMenuBar.coHostExtendButtons = [giftButton]
+      ..bottomMenuBar.audienceExtendButtons = [giftButton];
 
     return SafeArea(
       child: ZegoUIKitPrebuiltLiveStreaming(
@@ -67,15 +65,16 @@ class _LivePageState extends State<LivePage> {
         userID: localUserID,
         userName: 'user_$localUserID',
         liveID: widget.liveID,
-        controller: liveController,
-        config: (widget.isHost ? hostConfig : audienceConfig)
-          ..foreground = giftForeground()
-          ..mediaPlayerConfig.supportTransparent = true
-          ..onLiveStreamingStateUpdate = (state) {
+        events: ZegoUIKitPrebuiltLiveStreamingEvents(
+          onStateUpdated: (state) {
             if (ZegoLiveStreamingState.idle == state) {
               ZegoGiftManager().playList.clear();
             }
           },
+        ),
+        config: (widget.isHost ? hostConfig : audienceConfig)
+          ..foreground = giftForeground()
+          ..mediaPlayer.supportTransparent = true,
       ),
     );
   }
@@ -207,7 +206,8 @@ class _LivePageState extends State<LivePage> {
     );
   }
 
-  ZegoMenuBarExtendButton get giftButton => ZegoMenuBarExtendButton(
+  ZegoLiveStreamingMenuBarExtendButton get giftButton =>
+      ZegoLiveStreamingMenuBarExtendButton(
         index: 0,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(shape: const CircleBorder()),
