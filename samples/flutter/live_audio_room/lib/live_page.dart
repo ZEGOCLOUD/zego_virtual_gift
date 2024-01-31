@@ -52,7 +52,7 @@ class _LivePageState extends State<LivePage> {
     final hostConfig = ZegoUIKitPrebuiltLiveAudioRoomConfig.host();
 
     final audienceConfig = ZegoUIKitPrebuiltLiveAudioRoomConfig.audience()
-      ..bottomMenuBarConfig.audienceExtendButtons = [giftButton];
+      ..bottomMenuBar.audienceExtendButtons = [giftButton];
 
     return SafeArea(
       child: ZegoUIKitPrebuiltLiveAudioRoom(
@@ -62,11 +62,11 @@ class _LivePageState extends State<LivePage> {
         userName: 'user_$localUserID',
         roomID: widget.roomID,
         config: (widget.isHost ? hostConfig : audienceConfig)
-          ..takeSeatIndexWhenJoining = widget.isHost ? 0 : -1
+          ..seat.takeIndexWhenJoining = widget.isHost ? 0 : -1
           ..background = Container(
             color: Colors.black.withOpacity(0.5),
           )
-          ..mediaPlayerConfig.supportTransparent = true
+          ..mediaPlayer.supportTransparent = true
           ..foreground = giftForeground(),
       ),
     );
