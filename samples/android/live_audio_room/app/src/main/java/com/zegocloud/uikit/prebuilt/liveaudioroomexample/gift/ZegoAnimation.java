@@ -1,4 +1,4 @@
-package com.zegocloud.uikit.livestreaming.gift;
+package com.zegocloud.uikit.prebuilt.liveaudioroomexample.gift;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -99,16 +99,16 @@ public class ZegoAnimation implements GiftAnimation {
     public static void copyFileFromAssets(Context context, String assetsFilePath, String targetFileFullPath) {
 
         try {
-            if(assetsFilePath.endsWith(File.separator))
-            {
-                assetsFilePath = assetsFilePath.substring(0,assetsFilePath.length()-1);
+            if (assetsFilePath.endsWith(File.separator)) {
+                assetsFilePath = assetsFilePath.substring(0, assetsFilePath.length() - 1);
             }
             String fileNames[] = context.getAssets().list(assetsFilePath);
             if (fileNames.length > 0) {
                 File file = new File(targetFileFullPath);
                 file.mkdirs();
                 for (String fileName : fileNames) {
-                    copyFileFromAssets(context, assetsFilePath + File.separator + fileName, targetFileFullPath + File.separator + fileName);
+                    copyFileFromAssets(context, assetsFilePath + File.separator + fileName,
+                        targetFileFullPath + File.separator + fileName);
                 }
             } else {
 
