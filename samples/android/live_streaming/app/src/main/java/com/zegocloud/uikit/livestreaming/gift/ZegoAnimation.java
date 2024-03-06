@@ -1,9 +1,9 @@
 package com.zegocloud.uikit.livestreaming.gift;
 
 import android.graphics.PixelFormat;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
+import com.zegocloud.uikit.livestreaming.ZegoUtil;
 import im.zego.zegoexpress.ZegoExpressEngine;
 import im.zego.zegoexpress.ZegoMediaPlayer;
 import im.zego.zegoexpress.callback.IZegoMediaPlayerEventHandler;
@@ -13,15 +13,12 @@ import im.zego.zegoexpress.constants.ZegoMediaPlayerState;
 import im.zego.zegoexpress.constants.ZegoMultimediaLoadType;
 import im.zego.zegoexpress.entity.ZegoCanvas;
 import im.zego.zegoexpress.entity.ZegoMediaPlayerResource;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ZegoAnimation implements GiftAnimation {
 
     private final SurfaceView mediaPlayerView;
     private ZegoMediaPlayer mediaPlayer;
     private ViewGroup parentView;
-    private Map<String, String> cachedResourceMap = new HashMap<>();
 
     public ZegoAnimation(ViewGroup parent) {
         this.parentView = parent;
@@ -36,8 +33,12 @@ public class ZegoAnimation implements GiftAnimation {
         canvas.alphaBlend = true; // Support for Alpha channel rendering.
         mediaPlayer.setPlayerCanvas(canvas);
 
-        // demo gift resource
-        loadResourceFile("https://storage.zego.im/sdk-doc/Pics/zegocloud/gift/music_box.mp4");
+        //        String giftUrl = "https://storage.zego.im/sdk-doc/Pics/zegocloud/gift/music_box.mp4";
+        ZegoUtil.copyFileFromAssets(parent.getContext(), "music_box.mp4",
+            parent.getContext().getExternalFilesDir(null) + "/music_box.mp4");
+        String giftUrl = parent.getContext().getExternalFilesDir(null) + "/music_box.mp4";
+
+        loadResourceFile(giftUrl);
 
         mediaPlayer.setEventHandler(new IZegoMediaPlayerEventHandler() {
 
@@ -45,20 +46,8 @@ public class ZegoAnimation implements GiftAnimation {
             public void onMediaPlayerStateUpdate(ZegoMediaPlayer mediaPlayer, ZegoMediaPlayerState state,
                 int errorCode) {
                 super.onMediaPlayerStateUpdate(mediaPlayer, state, errorCode);
-                Log.d("TAG",
-                    "onMediaPlayerStateUpdate() called with: mediaPlayer = [" + mediaPlayer + "], state = [" + state
-                        + "], errorCode = [" + errorCode + "]");
                 if (state == ZegoMediaPlayerState.PLAY_ENDED) {
                     parentView.removeView(mediaPlayerView);
-                }
-            }
-
-            @Override
-            public void onMediaPlayerLocalCache(ZegoMediaPlayer mediaPlayer, int errorCode, String resource,
-                String cachedFile) {
-                super.onMediaPlayerLocalCache(mediaPlayer, errorCode, resource, cachedFile);
-                if (errorCode == 0) {
-                    cachedResourceMap.put(resource, cachedFile);
                 }
             }
         });
@@ -66,13 +55,9 @@ public class ZegoAnimation implements GiftAnimation {
 
     private void loadResourceFile(String url) {
         ZegoMediaPlayerResource resource = new ZegoMediaPlayerResource();
-        resource.loadType = ZegoMultimediaLoadType.FILE_PATH; // Choose file path for loading
-        if (cachedResourceMap.containsKey(url)) {
-            resource.filePath = cachedResourceMap.get(url);//file path
-        } else {
-            resource.filePath = url;
-        }
-        resource.alphaLayout = ZegoAlphaLayoutType.LEFT; // Choose Alpha channel layout based on available resources
+        resource.loadType = ZegoMultimediaLoadType.FILE_PATH;
+        resource.filePath = url;
+        resource.alphaLayout = ZegoAlphaLayoutType.LEFT;
         mediaPlayer.loadResourceWithConfig(resource, new IZegoMediaPlayerLoadResourceCallback() {
             @Override
             public void onLoadResourceCallback(int errorCode) {
@@ -80,7 +65,7 @@ public class ZegoAnimation implements GiftAnimation {
                 // Can execute logic such as updating UI
                 if (errorCode == 0) {
                     // The file is loaded successfully, and now you can start playing the media resource by startPlay().
-                    // 
+                    //
                 }
             }
         });
@@ -88,10 +73,17 @@ public class ZegoAnimation implements GiftAnimation {
 
     @Override
     public void startPlay() {
-        Log.d("TAG", "startPlay() called");
         if (mediaPlayerView.getParent() == null) {
             parentView.addView(mediaPlayerView);
             mediaPlayer.start();
         }
+
+        //        mediaPlayer.start();
+        //        // pause
+        //        mediaPlayer.pause();
+        //        // resume
+        //        mediaPlayer.resume();
+        //        // stop
+        //        mediaPlayer.stop();
     }
 }

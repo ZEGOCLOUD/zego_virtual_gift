@@ -14,11 +14,6 @@ import com.zegocloud.uikit.plugin.adapter.plugins.signaling.SendRoomMessageCallb
 import com.zegocloud.uikit.plugin.adapter.plugins.signaling.ZegoSignalingInRoomCommandMessage;
 import com.zegocloud.uikit.service.defines.ZegoUIKitSignalingPluginInRoomCommandMessageListener;
 import com.zegocloud.uikit.utils.Utils;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +30,7 @@ public class GiftHelper {
         this.userID = userID;
         this.userName = userName;
 
-        // when someone send gift in room,everyone will receive InRoomCommand
+        // when someone send gift in room, will receive InRoomCommandMessage
         ZegoUIKit.getSignalingPlugin().addInRoomCommandMessageListener(new ZegoUIKitSignalingPluginInRoomCommandMessageListener() {
                 @Override
                 public void onInRoomCommandMessageReceived(List<ZegoSignalingInRoomCommandMessage> messages,
@@ -67,24 +62,24 @@ public class GiftHelper {
         imageView.setLayoutParams(layoutParams);
         // click will post json to server
         imageView.setOnClickListener(v -> {
-            // !In the demo, gifts are sent directly by sending commands. However, 
-            // !when you integrate, you need to forward the commands through your business server 
+            // !In the demo, gifts are sent directly by sending commands. However,
+            // !when you integrate, you need to forward the commands through your business server
             // !in order to handle settlement-related logic.
             // !like this:
             // final String path = "https://zego-example-server-nextjs.vercel.app/api/send_gift";
-            // JSONObject jsonObject = new JSONObject();
-            // try {
-            //     jsonObject.put("app_id", appID);
-            //     jsonObject.put("server_secret", serverSecret);
-            //     jsonObject.put("room_id", roomID);
-            //     jsonObject.put("user_id", userID);
-            //     jsonObject.put("user_name", userName);
-            //     jsonObject.put("gift_type", 1001);
-            //     jsonObject.put("gift_count", 1);
-            //     jsonObject.put("timestamp", System.currentTimeMillis());
-            // } catch (JSONException e) {
-            //     e.printStackTrace();
-            // }
+             JSONObject jsonObject = new JSONObject();
+             try {
+//                 jsonObject.put("app_id", appID);
+//                 jsonObject.put("server_secret", serverSecret);
+                 jsonObject.put("room_id", roomID);
+                 jsonObject.put("user_id", userID);
+                 jsonObject.put("user_name", userName);
+                 jsonObject.put("gift_type", 1001);
+                 jsonObject.put("gift_count", 1);
+                 jsonObject.put("timestamp", System.currentTimeMillis());
+             } catch (JSONException e) {
+                 e.printStackTrace();
+             }
             // String jsonString = jsonObject.toString();
             // new Thread() {
             //     public void run() {
@@ -92,8 +87,8 @@ public class GiftHelper {
             //     }
             // }.start();
 
-            // !In the demo, gifts are sent directly by sending commands. However, 
-            // !when you integrate, you need to forward the commands through your business server 
+            // !In the demo, gifts are sent directly by sending commands. However,
+            // !when you integrate, you need to forward the commands through your business server
             // !in order to handle settlement-related logic.
             ZegoUIKit.getSignalingPlugin().sendInRoomCommandMessage(jsonObject.toString(), roomID,
                 new SendRoomMessageCallback() {
@@ -105,50 +100,6 @@ public class GiftHelper {
             );
         });
         return imageView;
-    }
-
-
-    /**
-     * post json to server,will receive InRoomCommand or InRoomTextMessage callback
-     *
-     * @param path
-     * @param jsonString
-     * @param successCallback
-     */
-    private void httpPost(String path, String jsonString, Runnable successCallback) {
-        try {
-            URL url = new URL(path);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setReadTimeout(5000);
-            conn.setRequestProperty("Charset", "UTF-8");
-            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            conn.setDoOutput(true);
-            byte[] writebytes = jsonString.getBytes();
-            conn.setRequestProperty("Content-Length", String.valueOf(writebytes.length));
-            OutputStream outwritestream = conn.getOutputStream();
-            outwritestream.write(jsonString.getBytes());
-            outwritestream.flush();
-            outwritestream.close();
-            int code = conn.getResponseCode();
-            if (code == 200) {
-                InputStream is = conn.getInputStream();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                int len = -1;
-                byte[] buffer = new byte[1024]; //1kb
-                while ((len = is.read(buffer)) != -1) {
-                    baos.write(buffer, 0, len);
-                }
-                is.close();
-                String content = baos.toString();
-                handler.post(successCallback);
-            } else {
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-
-        }
     }
 
     private void showAnimation() {
