@@ -25,7 +25,8 @@ export default function AudiencePage(props) {
       const {roomID, message, senderUserID, timestamp} = messageData;
         console.log(`onInRoomCommandMessageReceived, roomID:${roomID}, message:${message}, senderUserID:${senderUserID}, timestamp:${timestamp}`);
         setShowGift(true);
-      });
+      }
+    );
 
     return () => {
       if (this.mediaPlayer) {
@@ -128,37 +129,14 @@ export default function AudiencePage(props) {
   );
 
   function SendGift() {
-    /*const url = 'https://zego-virtual-gift.vercel.app/api/send_gift';
-    const data = {
-      app_id: KeyCenter.appID,
-      server_secret: KeyCenter.secret,
-      room_id: liveID,
-      user_id: userID,
-      user_name: userName,
-      gift_type: 1001,
-      gift_count: 1,
-      timestamp: Date.now(),
-    }
-    
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.Code === 0) {
-          console.log(`SendGift success, ${JSON.stringify(data)}`);
-          setShowGift(true);
-        }
-      })
-      .catch((error) => {
-        console.log(`SendGift failed, ${error}`);
-      });*/
-
       setShowGift(true);
+
+      ZegoUIKit.getSignalingPlugin().sendInRoomCommandMessage(liveID, {
+        roomID: liveID,
+        message: "gift_name",
+        senderUserID: userID,
+        timestamp: Date.parse(new Date())   // millisecond
+      })
   }
 }
 
