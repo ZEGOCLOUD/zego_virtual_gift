@@ -39,6 +39,7 @@
     "react-native-screens": ">=3.33.0 <3.36.0",
     "react-delegate-component": "^1.0.0",
     "react-native-orientation-locker": "^1.7.0",
+    "react-native-device-info": "^14.0.4",
 
     "@zegocloud/zego-uikit-prebuilt-live-streaming-rn": "^2.4.1",
     "@zegocloud/zego-uikit-rn": "^2.14.3",

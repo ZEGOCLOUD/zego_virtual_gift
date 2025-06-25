@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button, View, StyleSheet, Text, TextInput } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { getFirstInstallTime, getStartupTime } from 'react-native-device-info'
+
 import { FileHelper } from "./FileHelper";
 
 export default function HomePage(props) {
@@ -15,9 +17,19 @@ export default function HomePage(props) {
     }
     const [userID, setUserID] = useState('');
     const [liveID, setLiveID] = useState('');
+
     useEffect(() => {
-        setUserID(String(Math.floor(Math.random() * 100000)));
-        setLiveID(String(Math.floor(Math.random() * 10000)));
+        getFirstInstallTime().then(firstInstallTime => {
+            console.log('firstInstallTime: ', firstInstallTime)
+            const id = String(firstInstallTime).slice(-5);
+            setUserID(id);
+        });
+        getStartupTime().then(firstStartupTime => {
+            console.log('firstStartupTime: ', firstStartupTime)
+            const id = String(firstStartupTime).slice(-7, -3);
+            setLiveID(id);
+        });
+        
         FileHelper.copyAssets();
     }, [])
     const insets = useSafeAreaInsets();
