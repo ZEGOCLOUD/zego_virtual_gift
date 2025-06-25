@@ -24,7 +24,7 @@ export default function HostPage(props) {
       ZegoUIKit.getSignalingPlugin().onInRoomTextMessageReceived(callbackID, (messageData) => {
         const {roomID, message, senderUserID, timestamp} = messageData;
           console.log(`Host onInRoomTextMessageReceived, roomID:${roomID}, message:${message}, senderUserID:${senderUserID}, timestamp:${timestamp}`);
-          showGiftAnimation();
+          setShowGift(true);
       });
 
       return () => {
@@ -36,8 +36,16 @@ export default function HostPage(props) {
       }
     }, []);
 
+    useEffect(() => {
+      if (!showGift) {
+        return;
+      }
+      
+      console.log('will showGiftAnimation');
+      showGiftAnimation();
+    }, [showGift]);
+
     const showGiftAnimation = async () => {
-      setShowGift(true);
       if (!this.mediaPlayer) {
         this.mediaPlayer = await ZegoExpressEngine.instance().createMediaPlayer();
   
