@@ -21,9 +21,9 @@ export default function AudiencePage(props) {
   useEffect(() => {
 
     const callbackID = 'callbackID'
-    ZegoUIKit.getSignalingPlugin().onInRoomCommandMessageReceived(callbackID, (messageData) => {
+    ZegoUIKit.getSignalingPlugin().onInRoomTextMessageReceived(callbackID, (messageData) => {
       const {roomID, message, senderUserID, timestamp} = messageData;
-        console.log(`onInRoomCommandMessageReceived, roomID:${roomID}, message:${message}, senderUserID:${senderUserID}, timestamp:${timestamp}`);
+        console.log(`Audience onInRoomTextMessageReceived, roomID:${roomID}, message:${message}, senderUserID:${senderUserID}, timestamp:${timestamp}`);
         setShowGift(true);
       }
     );
@@ -33,7 +33,7 @@ export default function AudiencePage(props) {
         ZegoExpressEngine.instance().destroyMediaPlayer(this.mediaPlayer);
         this.mediaPlayer = null;
       }
-      ZegoUIKit.getSignalingPlugin().onInRoomCommandMessageReceived(callbackID);
+      ZegoUIKit.getSignalingPlugin().onInRoomTextMessageReceived(callbackID);
     }
   }, []);
 
@@ -131,12 +131,13 @@ export default function AudiencePage(props) {
   function SendGift() {
       setShowGift(true);
 
-      ZegoUIKit.getSignalingPlugin().sendInRoomCommandMessage(liveID, {
+      const message = JSON.stringify({
         roomID: liveID,
         message: "gift_name",
         senderUserID: userID,
         timestamp: Date.parse(new Date())   // millisecond
       })
+      ZegoUIKit.getSignalingPlugin().sendInRoomTextMessage(liveID, message)
   }
 }
 
