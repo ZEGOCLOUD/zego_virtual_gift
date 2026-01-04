@@ -15,23 +15,22 @@ export default function AudiencePage(props) {
   const { route } = props;
   const { params } = route;
   const { userID, userName, liveID } = params;
-  const mediaViewRef = useRef();
   const [showGift, setShowGift] = useState(false);
+  const mediaViewRef = useRef();
+  const mediaPlayerRef = useRef(null);
 
   useEffect(() => {
-
     const callbackID = 'callbackID'
     ZegoUIKit.getSignalingPlugin().onInRoomTextMessageReceived(callbackID, (messageData) => {
       const {roomID, message, senderUserID, timestamp} = messageData;
-        console.log(`Audience onInRoomTextMessageReceived, roomID:${roomID}, message:${message}, senderUserID:${senderUserID}, timestamp:${timestamp}`);
-        setShowGift(true);
-      }
-    );
+      console.log(`Audience onInRoomTextMessageReceived, roomID:${roomID}, message:${message}, senderUserID:${senderUserID}, timestamp:${timestamp}`);
+      setShowGift(true);
+    });
 
     return () => {
-      if (this.mediaPlayer) {
-        ZegoExpressEngine.instance().destroyMediaPlayer(this.mediaPlayer);
-        this.mediaPlayer = null;
+      if (mediaPlayerRef.current) {
+        ZegoExpressEngine.instance().destroyMediaPlayer(mediaPlayerRef.current);
+        mediaPlayerRef.current = null;
       }
       ZegoUIKit.getSignalingPlugin().onInRoomTextMessageReceived(callbackID);
     }
@@ -47,18 +46,22 @@ export default function AudiencePage(props) {
   }, [showGift]);
 
   const showGiftAnimation = async () => {
-    if (!this.mediaPlayer) {
-      this.mediaPlayer = await ZegoExpressEngine.instance().createMediaPlayer();
+    if (!mediaPlayerRef.current) {
+      mediaPlayerRef.current = await ZegoExpressEngine.instance().createMediaPlayer();
 
-      this.mediaPlayer.on('mediaPlayerStateUpdate', (player, state, errorCode) => {
+      mediaPlayerRef.current.on('mediaPlayerStateUpdate', (player, state, errorCode) => {
         if (state === ZegoMediaPlayerState.PlayEnded) {
           console.log('Gift animation Play Ended');
           setShowGift(false);
         }
       });
     }
-    // this.mediaPlayer.enableRepeat = true;
-    this.mediaPlayer.setPlayerView({ 'reactTag': findNodeHandle(mediaViewRef.current), 'viewMode': 0, 'backgroundColor': 0, 'alphaBlend': true});
+    mediaPlayerRef.current.setPlayerView({
+      'reactTag': findNodeHandle(mediaViewRef.current),
+      'viewMode': 0,
+      'backgroundColor': 'transparent',
+      'alphaBlend': true
+    });
 
     let resource = new ZegoMediaPlayerResource();
     resource.loadType = ZegoMultimediaLoadType.FilePath;
@@ -71,11 +74,11 @@ export default function AudiencePage(props) {
     resource.filePath = 'https://storage.zego.im/sdk-doc/Pics/zegocloud/oss/1.mp4';
 
     console.log(`File Path: ${resource.filePath}`);
-    
-    this.mediaPlayer.loadResourceWithConfig(resource).then((ret) => {
+
+    mediaPlayerRef.current.loadResourceWithConfig(resource).then((ret) => {
       console.log("load resource error: " + ret.errorCode)
       if (ret.errorCode === 0) {
-        this.mediaPlayer.start();
+        mediaPlayerRef.current.start();
       }
     });
   };
@@ -115,13 +118,13 @@ export default function AudiencePage(props) {
         }}
         plugins={[ZIM]}
       />
-      {showGift ? 
-        <View style={{height: 350, width: 350, backgroundColor: 0}}>
+      {showGift ?
+        <View style={{height: 350, width: 350, backgroundColor: 'transparent'}}>
           <ZegoTextureView
-          // @ts-ignore
-          style={{ flex: 1, width: '100%', height: '100%', position: 'absolute' }}
-          ref={mediaViewRef}
-          collapsable={false}
+            // @ts-ignore
+            style={{ flex: 1, width: '100%', height: '100%', position: 'absolute' }}
+            ref={mediaViewRef}
+            collapsable={false}
           />
         </View> : null
       }
@@ -135,7 +138,7 @@ export default function AudiencePage(props) {
         roomID: liveID,
         message: "gift_name",
         senderUserID: userID,
-        timestamp: Date.parse(new Date())   // millisecond
+        timestamp: Date.now()
       })
       ZegoUIKit.getSignalingPlugin().sendInRoomTextMessage(liveID, message)
   }
