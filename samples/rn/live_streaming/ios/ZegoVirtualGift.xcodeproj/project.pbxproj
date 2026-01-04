@@ -267,6 +267,7 @@
 				DEVELOPMENT_TEAM = PN83KX5U85;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ZegoVirtualGift/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ZegoVirtualGiftRN;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -294,6 +295,7 @@
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = PN83KX5U85;
 				INFOPLIST_FILE = ZegoVirtualGift/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ZegoVirtualGiftRN;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

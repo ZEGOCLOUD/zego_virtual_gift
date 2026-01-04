@@ -41,10 +41,10 @@
     "react-native-orientation-locker": "^1.7.0",
     "react-native-device-info": "^14.0.4",
 
-    "zego-express-engine-reactnative": "^3.20.2",
+    "zego-express-engine-reactnative": "^3.22.0",
     "zego-zim-react-native": "^2.20.0",
-    "@zegocloud/zego-uikit-rn": "^2.17.11",
-    "@zegocloud/zego-uikit-prebuilt-live-streaming-rn": "^2.5.8",
+    "@zegocloud/zego-uikit-rn": "^2.19.1",
+    "@zegocloud/zego-uikit-prebuilt-live-streaming-rn": "^2.8.3",
 
     "react-native-fs": "^2.20.0"
   },
