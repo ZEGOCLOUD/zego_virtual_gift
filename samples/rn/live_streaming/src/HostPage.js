@@ -36,15 +36,6 @@ export default function HostPage(props) {
       }
     }, []);
 
-    useEffect(() => {
-      if (!showGift) {
-        return;
-      }
-      
-      console.log('will showGiftAnimation');
-      showGiftAnimation();
-    }, [showGift]);
-
     const showGiftAnimation = async () => {
       if (!mediaPlayerRef.current) {
         mediaPlayerRef.current = await ZegoExpressEngine.instance().createMediaPlayer();
@@ -137,6 +128,9 @@ export default function HostPage(props) {
                   style={{ flex: 1, width: '100%', height: '100%', position: 'absolute' }}
                   ref={mediaViewRef}
                   collapsable={false}
+                  onLayout={() => {
+                    showGiftAnimation();
+                  }}
                 />
               </View> : null
             }
